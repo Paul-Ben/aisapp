@@ -28,7 +28,29 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        // Redirect based on user role
+        return redirect()->route($this->getDashboardRoute(Auth::user()));
+    }
+
+    /**
+     * Get the appropriate dashboard route based on user role
+     */
+    private function getDashboardRoute($user): string
+    {
+        if ($user->isSuperAdmin()) {
+            return 'superadmin.dashboard';
+        } elseif ($user->isFinanceOfficer()) {
+            return 'finance.dashboard';
+        } elseif ($user->isAdmin()) {
+            return 'admin.dashboard';
+        } elseif ($user->isExamOfficer()) {
+            return 'exam.dashboard';
+        } elseif ($user->isProprietor()) {
+            return 'proprietor.dashboard';
+        } else {
+            // Default for staff and any other roles
+            return 'staff.dashboard';
+        }
     }
 
     /**
