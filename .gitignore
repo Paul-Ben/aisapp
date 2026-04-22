@@ -1,1 +1,5 @@
 Nothing should be ignored based on the provided file changes. The only modified file is a source code file (`resources/views/auth/login.blade.php`) which should not be ignored.
+node_modules
+/vendor
+/frontdesign
+.env
