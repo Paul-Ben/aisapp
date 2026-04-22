@@ -1,1 +1,6 @@
 Nothing should be ignored based on the provided file changes. The modification of 'resources/views/auth/register.blade.php' represents a standard source code file change, which does not necessitate any additions to the .gitignore file. Therefore, no modifications to the .gitignore content are required. However, since there was no previous .gitignore content provided, and no rules need to be established, the response remains void of any .gitignore entries.
+Nothing should be ignored based on the provided file changes. The only modified file is a source code file (`resources/views/auth/login.blade.php`) which should not be ignored.
+node_modules
+/vendor
+/frontdesign
+.env
