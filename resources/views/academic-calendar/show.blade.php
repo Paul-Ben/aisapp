@@ -4,7 +4,7 @@
 
 @section('content')
     <x-landing.navbar />
-
+    <div class="row mb-5"></div>
     <!-- Academic Calendar Section -->
     <section class="section-padding" style="background-color: var(--color-bg-light); min-height: 80vh;">
         <div class="container">
@@ -40,7 +40,7 @@
             </div>
 
             <div class="text-center mt-4">
-                <a href="{{ route('/') }}" class="btn btn-primary-custom">
+                <a href="{{ route('home') }}" class="btn btn-primary-custom">
                     <i class="fas fa-arrow-left me-2"></i>Back to Home
                 </a>
             </div>

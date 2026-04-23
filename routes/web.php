@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 
 // Public route to view academic calendar on landing page
 Route::get('/term-calendar', [AcademicCalendarController::class, 'show'])->name('calendar.show');
