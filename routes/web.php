@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\AcademicCalendarController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -8,10 +10,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Public route to view academic calendar on landing page
+Route::get('/term-calendar', [AcademicCalendarController::class, 'show'])->name('calendar.show');
+
 // Redirect authenticated users to their role-based dashboard
 Route::get('/dashboard', function () {
     $user = Auth::user();
-    
+
     if ($user->isSuperAdmin()) {
         return redirect()->route('superadmin.dashboard');
     } elseif ($user->isFinanceOfficer()) {
@@ -43,9 +48,9 @@ Route::middleware(['auth', 'role:finance_officer'])->prefix('finance')->name('fi
 
 // Admin Dashboard Routes
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboards.admin');
-    })->name('dashboard');
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+    Route::post('/calendar/upload', [AcademicCalendarController::class, 'upload'])->name('calendar.upload');
+    Route::delete('/calendar/delete', [AcademicCalendarController::class, 'destroy'])->name('calendar.delete');
 });
 
 // Exam Officer Dashboard Routes
