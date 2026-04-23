@@ -17,7 +17,8 @@
                     </div>
                 </div>
                 <div class="col-lg-6 hero-image fade-in">
-                    <img src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=800&h=600&fit=crop" alt="Happy Students" class="img-fluid">
+                    <img src="{{asset('assets/images/ais_header_image.png')}}" alt="Happy Students" class="img-fluid">
+                    {{-- <img src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=800&h=600&fit=crop" alt="Happy Students" class="img-fluid"> --}}
                 </div>
             </div>
         </div>
@@ -71,7 +72,8 @@
             <div class="row align-items-center">
                 <div class="col-lg-6 mb-4 mb-lg-0">
                     <div class="about-image">
-                        <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800&h=600&fit=crop" alt="About AIS" class="img-fluid">
+                        <img src="{{asset('assets/images/aisimage_class.png')}}" alt="About AIS" class="img-fluid">
+                        {{-- <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800&h=600&fit=crop" alt="About AIS" class="img-fluid"> --}}
                     </div>
                 </div>
                 <div class="col-lg-6 about-content">

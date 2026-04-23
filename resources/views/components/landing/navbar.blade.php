@@ -12,10 +12,10 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto align-items-center">
                 <li class="nav-item">
-                    <a class="nav-link" href="#home">Home</a>
+                    <a class="nav-link" href="{{route('home')}}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#about">About Us</a>
+                    <a class="nav-link" href="{{ route('home') }}#about">About Us</a>
                 </li>
                 
                 <li class="nav-item dropdown">
@@ -33,7 +33,7 @@
                 </li>
                 
                 <li class="nav-item">
-                    <a class="nav-link" href="#contact">Contact</a>
+                    <a class="nav-link" href="{{ route('home') }}#contact">Contact</a>
                 </li>
             
                 @if (Route::has('login'))
