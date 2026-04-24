@@ -328,7 +328,9 @@
         <div class="login-card">
             <!-- Logo -->
             <div class="login-logo">
-                <img src="{{ asset('assets/images/logo.jpg') }}" alt="Alven International Schools Logo">
+                <a href="{{ route('home') }}" class="logo-link">
+                    <img src="{{ asset('assets/images/logo.jpg') }}" alt="Alven International Schools Logo">
+                </a>
             </div>
 
             <!-- Title -->
