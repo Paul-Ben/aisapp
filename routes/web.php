@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AcademicCalendarController;
+use App\Http\Controllers\GirlsHairstyleController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,6 +13,9 @@ Route::get('/', function () {
 
 // Public route to view academic calendar on landing page
 Route::get('/term-calendar', [AcademicCalendarController::class, 'show'])->name('calendar.show');
+
+// Public route to view girls hairstyles on landing page
+Route::get('/girls-hairstyles', [GirlsHairstyleController::class, 'show'])->name('hairstyles.show');
 
 // Redirect authenticated users to their role-based dashboard
 Route::get('/dashboard', function () {
@@ -51,6 +55,8 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
     Route::post('/calendar/upload', [AcademicCalendarController::class, 'upload'])->name('calendar.upload');
     Route::delete('/calendar/delete', [AcademicCalendarController::class, 'destroy'])->name('calendar.delete');
+    Route::post('/hairstyles/upload', [GirlsHairstyleController::class, 'upload'])->name('hairstyles.upload');
+    Route::delete('/hairstyles/delete', [GirlsHairstyleController::class, 'destroy'])->name('hairstyles.delete');
 });
 
 // Exam Officer Dashboard Routes
