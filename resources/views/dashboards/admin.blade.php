@@ -89,7 +89,7 @@
                     <i class="fas fa-calendar-alt fa-3x text-danger mb-3"></i>
                     <h5 class="card-title">Academic Calendar</h5>
                     <p class="card-text">Upload and manage school calendar</p>
-                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#calendarUploadModal">
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#academicCalendarModal">
                         Manage Calendar
                     </button>
                 </div>
@@ -103,7 +103,7 @@
                     <i class="fas fa-newspaper fa-3x text-info mb-3"></i>
                     <h5 class="card-title">Newsletter</h5>
                     <p class="card-text">Upload and manage school newsletter</p>
-                    <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#newsletterUploadModal">
+                    <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#newsletterModal">
                         Manage Newsletter
                     </button>
                 </div>
@@ -117,7 +117,7 @@
                     <i class="fas fa-cut fa-3x text-pink mb-3"></i>
                     <h5 class="card-title">Girls Hairstyles</h5>
                     <p class="card-text">Upload hairstyle guide for girls</p>
-                    <button type="button" class="btn btn-pink" data-bs-toggle="modal" data-bs-target="#hairstyleUploadModal">
+                    <button type="button" class="btn btn-pink" data-bs-toggle="modal" data-bs-target="#girlsHairstylesModal">
                         Manage Hairstyles
                     </button>
                 </div>
@@ -127,7 +127,7 @@
 </div>
 
 <!-- Academic Calendar Upload Modal -->
-<div class="modal fade" id="calendarUploadModal" tabindex="-1" aria-labelledby="calendarUploadModalLabel" aria-hidden="true">
+<div class="modal fade" id="academicCalendarModal" tabindex="-1" aria-labelledby="calendarUploadModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -221,7 +221,7 @@
 </div>
 
 <!-- Girls Hairstyles Upload Modal -->
-<div class="modal fade" id="hairstyleUploadModal" tabindex="-1" aria-labelledby="hairstyleUploadModalLabel" aria-hidden="true">
+<div class="modal fade" id="girlsHairstylesModal" tabindex="-1" aria-labelledby="hairstyleUploadModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -315,7 +315,7 @@
 </div>
 
 <!-- Newsletter Upload Modal -->
-<div class="modal fade" id="newsletterUploadModal" tabindex="-1" aria-labelledby="newsletterUploadModalLabel" aria-hidden="true">
+<div class="modal fade" id="newsletterModal" tabindex="-1" aria-labelledby="newsletterUploadModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
