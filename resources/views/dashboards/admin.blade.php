@@ -96,14 +96,16 @@
             </div>
         </div>
 
-        <!-- Announcements -->
+        <!-- Newsletter -->
         <div class="col-md-4">
             <div class="card h-100">
                 <div class="card-body text-center">
-                    <i class="fas fa-bullhorn fa-3x text-secondary mb-3"></i>
-                    <h5 class="card-title">Announcements</h5>
-                    <p class="card-text">Post and manage announcements</p>
-                    <a href="#" class="btn btn-secondary">Announcements</a>
+                    <i class="fas fa-newspaper fa-3x text-info mb-3"></i>
+                    <h5 class="card-title">Newsletter</h5>
+                    <p class="card-text">Upload and manage school newsletter</p>
+                    <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#newsletterUploadModal">
+                        Manage Newsletter
+                    </button>
                 </div>
             </div>
         </div>
@@ -305,6 +307,103 @@
                     @endif
                     <button type="submit" class="btn btn-pink">
                         <i class="fas fa-upload me-1"></i>Upload Hairstyles
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Newsletter Upload Modal -->
+<div class="modal fade" id="newsletterUploadModal" tabindex="-1" aria-labelledby="newsletterUploadModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="newsletterUploadModalLabel">
+                    <i class="fas fa-newspaper text-info me-2"></i>Upload School Newsletter
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ route('admin.newsletter.upload') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-body">
+                    @if($currentNewsletter)
+                        <div class="alert alert-info">
+                            <strong>Current Newsletter:</strong> {{ $currentNewsletter->term ?? 'N/A' }} {{ $currentNewsletter->session ? '(' . $currentNewsletter->session . ')' : '' }}
+                        </div>
+                        <div class="mb-4 text-center">
+                            <i class="fas fa-file-pdf fa-5x text-danger mb-3"></i>
+                            <p class="text-muted">PDF Document</p>
+                            <a href="{{ asset('storage/' . $currentNewsletter->pdf_path) }}" 
+                               target="_blank" 
+                               class="btn btn-outline-info btn-sm">
+                                <i class="fas fa-eye me-1"></i>View Current PDF
+                            </a>
+                        </div>
+                    @endif
+                    
+                    <div class="mb-3">
+                        <label for="newsletter_pdf" class="form-label">
+                            <i class="fas fa-file-pdf me-1"></i>Newsletter PDF
+                        </label>
+                        <input type="file" 
+                               class="form-control @error('newsletter_pdf') is-invalid @enderror" 
+                               id="newsletter_pdf" 
+                               name="newsletter_pdf" 
+                               accept="application/pdf"
+                               required>
+                        <div class="form-text">Accepted format: PDF only. Max size: 10MB</div>
+                        @error('newsletter_pdf')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="newsletter_term" class="form-label">
+                                <i class="fas fa-clock me-1"></i>Term (Optional)
+                            </label>
+                            <input type="text" 
+                                   class="form-control @error('term') is-invalid @enderror" 
+                                   id="newsletter_term" 
+                                   name="term" 
+                                   placeholder="e.g., First Term"
+                                   value="{{ old('term') }}">
+                            @error('term')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="newsletter_session" class="form-label">
+                                <i class="fas fa-calendar me-1"></i>Session (Optional)
+                            </label>
+                            <input type="text" 
+                                   class="form-control @error('session') is-invalid @enderror" 
+                                   id="newsletter_session" 
+                                   name="session" 
+                                   placeholder="e.g., 2024/2025"
+                                   value="{{ old('session') }}">
+                            @error('session')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle me-1"></i>
+                        <strong>Note:</strong> Uploading a new newsletter will replace the existing one.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    @if($currentNewsletter)
+                        <a href="{{ route('admin.newsletter.delete') }}" class="btn btn-outline-danger me-auto" 
+                           onclick="return confirm('Are you sure you want to delete the current newsletter?')">
+                            <i class="fas fa-trash me-1"></i>Delete Newsletter
+                        </a>
+                    @endif
+                    <button type="submit" class="btn btn-info">
+                        <i class="fas fa-upload me-1"></i>Upload Newsletter
                     </button>
                 </div>
             </form>

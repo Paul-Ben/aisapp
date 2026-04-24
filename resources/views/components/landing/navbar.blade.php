@@ -23,7 +23,7 @@
                         Parent Resources
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Term Newsletter</a></li>
+                        <li><a class="dropdown-item" href="{{ route('newsletter.show') }}">Term Newsletter</a></li>
                         <li><a class="dropdown-item" href="{{ route('calendar.show') }}">Term Calendar</a></li>
                         <li><a class="dropdown-item" href="{{ route('hairstyles.show') }}">Girls Hairstyles</a></li>
                         <li><a class="dropdown-item" href="#">Uniform Policy</a></li>
