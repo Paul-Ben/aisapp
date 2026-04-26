@@ -1,39 +1,20 @@
 ```
-# Dependency directories
+# Laravel-specific ignores
 vendor/
 node_modules/
-
-# Laravel-specific
+public/storage
 bootstrap/cache/
-storage/framework/cache/
-storage/framework/sessions/
-storage/framework/views/
-public/storage/
-
-# Environment
+storage/logs/
+storage/framework/
+.npm
+.yarn
 .env
 .env.local
 .env.*
-
-# IDE
-.vscode/
-.idea/
-
-# OS
 .DS_Store
 Thumbs.db
-
-# Logs
 *.log
-
-# Compiled files
-*.phpc
-*.o
-*.obj
-*.out
-
-# Build artifacts
-dist/
-build/
-target/
+*.tmp
+.vscode/
+.idea/
 ```

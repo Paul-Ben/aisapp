@@ -41,7 +41,7 @@
                     <i class="fas fa-users fa-3x text-info mb-3"></i>
                     <h5 class="card-title">Staff Management</h5>
                     <p class="card-text">Manage teaching and non-teaching staff</p>
-                    <a href="#" class="btn btn-info">Manage Staff</a>
+                    <a href="{{ route('admin.staff.index') }}" class="btn btn-info">Manage Staff</a>
                 </div>
             </div>
         </div>
@@ -65,7 +65,7 @@
                     <i class="fas fa-chalkboard-teacher fa-3x text-success mb-3"></i>
                     <h5 class="card-title">Class Management</h5>
                     <p class="card-text">Organize classes and timetables</p>
-                    <a href="#" class="btn btn-success">Classes</a>
+                    <a href="{{ route('admin.classes.index') }}" class="btn btn-success">Classes</a>
                 </div>
             </div>
         </div>
