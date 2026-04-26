@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\StudentsImport;
 use App\Exports\StudentsExport;
+use Carbon\Carbon;
+use function Illuminate\Log\log;
 
 class StudentController extends Controller
 {
@@ -343,7 +345,7 @@ class StudentController extends Controller
                             'first_name' => $row['first_name'] ?? '',
                             'last_name' => $row['last_name'] ?? '',
                             'middle_name' => $row['middle_name'] ?? null,
-                            'date_of_birth' => $row['date_of_birth'] ?? now(),
+                            'date_of_birth' => $this->parseDate($row['date_of_birth'] ?? null) ?? now(),
                             'gender' => $row['gender'] ?? 'male',
                             'email' => $row['email'] ?? null,
                             'phone' => $row['phone'] ?? null,
@@ -355,11 +357,12 @@ class StudentController extends Controller
                             'blood_group' => $row['blood_group'] ?? null,
                             'genotype' => $row['genotype'] ?? null,
                             'class_id' => $request->class_id ?? null,
-                            'admission_date' => $row['admission_date'] ?? now(),
+                            'admission_date' => $this->parseDate($row['admission_date'] ?? null) ?? now(),
                             'status' => 'active',
                         ]);
                         $successCount++;
                     } catch (\Exception $e) {
+                        log()->error("Error processing row " . ($index + 2) . ": " . $e->getMessage());
                         $errors[] = "Row " . ($index + 2) . ": " . $e->getMessage();
                         $errorCount++;
                     }
@@ -389,11 +392,6 @@ class StudentController extends Controller
      */
     public function downloadTemplate()
     {
-        $headers = [
-            'Content-Type' => 'text/csv',
-            'Content-Disposition' => 'attachment; filename="student_template.csv"',
-        ];
-
         $columns = [
             'admission_number',
             'first_name',
@@ -413,13 +411,38 @@ class StudentController extends Controller
             'admission_date',
         ];
 
-        return response()->download(
-            tempnam(sys_get_temp_dir(), 'template'),
-            'student_template.csv',
-            $headers
-        )->setContent(implode("\n", [
+        $csvContent = implode("\n", [
             implode(',', $columns),
             'ADM001,John,Doe,Smith,2010-05-15,male,john@example.com,08012345678,"Lagos Street",Lagos,Ikeja,Nigerian,Christian,A+,AA,2024-01-15',
-        ]));
+        ]);
+
+        return response()->streamDownload(function () use ($csvContent) {
+            echo $csvContent;
+        }, 'student_template.csv', [
+            'Content-Type' => 'text/csv',
+        ]);
+    }
+
+    /**
+     * Parse date from various formats.
+     */
+    private function parseDate($dateString)
+    {
+        if (empty($dateString)) {
+            return null;
+        }
+
+        try {
+            // Handle d/m/Y format specifically as it's common in CSVs
+            if (preg_match('/^\d{1,2}\/\d{1,2}\/\d{4}$/', $dateString)) {
+                return Carbon::createFromFormat('d/m/Y', $dateString)->format('Y-m-d');
+            }
+
+            // Fallback to general parsing
+            return Carbon::parse($dateString)->format('Y-m-d');
+        } catch (\Exception $e) {
+            log()->warning("Could not parse date: {$dateString}. Error: " . $e->getMessage());
+            return null;
+        }
     }
 }

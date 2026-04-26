@@ -14,18 +14,15 @@
             
             <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
                 <h4>Quick Links</h4>
-                <a href="#home">Home</a>
-                <a href="#about">About Us</a>
-                <a href="#">Admissions</a>
-                <a href="#">Academics</a>
+                <a href="{{route('home')}}">Home</a>
+                <a href="{{route('home')}}#about">About Us</a>
+                <a href="{{route('home')}}#contact">Contact</a>
             </div>
             
             <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
                 <h4>Programs</h4>
                 <a href="#">Nursery</a>
                 <a href="#">Primary School</a>
-                <a href="#">Extracurricular</a>
-                <a href="#">Sports</a>
             </div>
             
             <div class="col-lg-3 col-md-6">
