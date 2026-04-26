@@ -46,6 +46,16 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/dashboard', function () {
         return view('dashboards.admin');
     })->name('dashboard');
+    
+    // Student Management Routes
+    Route::resource('students', \App\Http\Controllers\StudentController::class);
+    Route::post('students/bulk-promote', [\App\Http\Controllers\StudentController::class, 'bulkPromote'])->name('students.bulk-promote');
+    Route::post('students/bulk-demote', [\App\Http\Controllers\StudentController::class, 'bulkDemote'])->name('students.bulk-demote');
+    Route::post('students/bulk-graduate', [\App\Http\Controllers\StudentController::class, 'bulkGraduate'])->name('students.bulk-graduate');
+    Route::get('students/upload', [\App\Http\Controllers\StudentController::class, 'showUploadForm'])->name('students.upload');
+    Route::post('students/process-upload', [\App\Http\Controllers\StudentController::class, 'processUpload'])->name('students.process-upload');
+    Route::get('students/download-template', [\App\Http\Controllers\StudentController::class, 'downloadTemplate'])->name('students.download-template');
+    Route::get('students/promote', [\App\Http\Controllers\StudentController::class, 'showPromoteForm'])->name('students.promote');
 });
 
 // Exam Officer Dashboard Routes

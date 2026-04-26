@@ -1,35 +1,56 @@
 ```
-# Compiled and build artifacts
-*.pyc
-__pycache__/
-
-# Dependencies
+# Laravel-specific ignores
 vendor/
 node_modules/
-
-# Logs and temp files
-*.log
-*.tmp
+public/storage
+bootstrap/cache/
+storage/logs/
+storage/framework/
+.npm
+.yarn
 
 # Environment
 .env
 .env.local
-*.env.*
+.env.*
+
+# Compiled and build artifacts
+*.pyc
+__pycache__/
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.a
+*.out
+dist/
+build/
+target/
+
+# Dependencies
+.venv/
+venv/
+.mypy_cache/
+.pytest_cache/
+.gradle/
+julia-*/
+zig*/
+
+# Logs and temp files
+*.log
+*.tmp
+*.swp
+*.swo
+coverage/
+htmlcov/
+.coverage
 
 # Editors
 .vscode/
 .idea/
 
-# Laravel specific
-storage/
-bootstrap/cache/
-public/storage/
-
-# Database
-*.sqlite
-*.db
-
-# OS generated files
+# System
 .DS_Store
 Thumbs.db
 ```
