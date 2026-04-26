@@ -411,8 +411,9 @@
             </form>
         </div>
     </div>
+</div>
 
-    <!-- Session and Term Management Modal -->
+<!-- Session and Term Management Modal -->
     <div class="modal fade" id="sessionTermModal" tabindex="-1" aria-labelledby="sessionTermModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -448,7 +449,7 @@
                             <i class="fas fa-plus-circle me-2"></i>Add New Session
                         </div>
                         <div class="card-body">
-                            <form action="{{ route('admin.session.store') }}" method="POST">
+                            <form action="{{ route('admin.admin.session.store') }}" method="POST">
                                 @csrf
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
@@ -525,7 +526,7 @@
                                                     </td>
                                                     <td>
                                                         @if(!$sess->is_active)
-                                                            <form action="{{ route('admin.session.set-active', $sess->id) }}" method="POST" class="d-inline">
+                                                            <form action="{{ route('admin.admin.session.set-active', $sess->id) }}" method="POST" class="d-inline">
                                                                 @csrf
                                                                 <button type="submit" class="btn btn-sm btn-success" 
                                                                         onclick="return confirm('Set {{ $sess->session }} ({{ ucfirst($sess->term) }}) as active?')">
@@ -534,7 +535,7 @@
                                                             </form>
                                                         @endif
                                                         @if(!$sess->is_active)
-                                                            <form action="{{ route('admin.session.delete', $sess->id) }}" method="POST" class="d-inline">
+                                                            <form action="{{ route('admin.admin.session.delete', $sess->id) }}" method="POST" class="d-inline">
                                                                 @csrf
                                                                 @method('DELETE')
                                                                 <button type="submit" class="btn btn-sm btn-outline-danger" 
