@@ -43,7 +43,10 @@ Route::get('/dashboard', function () {
 
 // Super Admin Dashboard Routes
 Route::middleware(['auth', 'role:superadmin'])->prefix('superadmin')->name('superadmin.')->group(function () {
-    Route::get('/dashboard', [UserManagementController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', function() {
+        return view('dashboards.superadmin');
+    })->name('dashboard');
+    Route::get('/users', [UserManagementController::class, 'index'])->name('users.index');
     Route::post('/users', [UserManagementController::class, 'store'])->name('users.store');
     Route::put('/users/{user}', [UserManagementController::class, 'update'])->name('users.update');
     Route::delete('/users/{user}', [UserManagementController::class, 'destroy'])->name('users.destroy');
