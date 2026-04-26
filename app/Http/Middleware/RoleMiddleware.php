@@ -22,6 +22,12 @@ class RoleMiddleware
 
         $user = Auth::user();
         
+        // Check if user is active
+        if (!$user->is_active) {
+            Auth::logout();
+            return redirect()->route('login')->with('error', 'Your account has been deactivated. Please contact the administrator.');
+        }
+        
         // Check if user has the required role
         if (!$user->hasRole($role)) {
             abort(403, 'Unauthorized action. You do not have access to this page.');

@@ -346,6 +346,12 @@
                 </div>
             @endif
 
+            @if (session('error'))
+                <div class="alert alert-danger" role="alert">
+                    {{ session('error') }}
+                </div>
+            @endif
+
             <!-- Login Form -->
             <form method="POST" action="{{ route('login') }}">
                 @csrf
