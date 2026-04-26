@@ -69,6 +69,11 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::delete('/hairstyles/delete', [GirlsHairstyleController::class, 'destroy'])->name('hairstyles.delete');
     Route::post('/newsletter/upload', [NewsletterController::class, 'upload'])->name('newsletter.upload');
     Route::delete('/newsletter/delete', [NewsletterController::class, 'destroy'])->name('newsletter.delete');
+    
+    // Session and Term Management Routes
+    Route::post('/session/store', [AdminDashboardController::class, 'storeSession'])->name('session.store');
+    Route::post('/session/{id}/set-active', [AdminDashboardController::class, 'setActiveSession'])->name('session.set-active');
+    Route::delete('/session/{id}/delete', [AdminDashboardController::class, 'deleteSession'])->name('session.delete');
 });
 
 // Exam Officer Dashboard Routes
