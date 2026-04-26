@@ -6,7 +6,7 @@
             <span>Schools Dashboard</span>
         </div>
     </div>
-
+    
     <div class="sidebar-toggle" id="sidebarToggle" title="Toggle Sidebar">
         <i class="fas fa-chevron-left"></i>
     </div>
@@ -14,6 +14,82 @@
     <nav class="sidebar-nav">
         <div class="nav-section-title">Main Menu</div>
         
+        @if(auth()->user()->isSuperAdmin())
+        <!-- Super Admin Navigation -->
+        <div class="nav-item">
+            <a href="{{ route('superadmin.dashboard') }}" class="nav-link {{ request()->routeIs('superadmin.dashboard') ? 'active' : '' }}">
+                <i class="fas fa-th-large"></i>
+                <span>Dashboard</span>
+            </a>
+        </div>
+        
+        <div class="nav-item">
+            <a href="{{ route('superadmin.users.index') }}" class="nav-link {{ request()->routeIs('superadmin.users.*') ? 'active' : '' }}">
+                <i class="fas fa-users-cog"></i>
+                <span>User Management</span>
+            </a>
+        </div>
+        
+        <div class="nav-item">
+            <a href="#" class="nav-link">
+                <i class="fas fa-cogs"></i>
+                <span>System Settings</span>
+            </a>
+        </div>
+        
+        <div class="nav-item">
+            <a href="#" class="nav-link">
+                <i class="fas fa-history"></i>
+                <span>Audit Logs</span>
+            </a>
+        </div>
+        
+        <div class="nav-item">
+            <a href="{{ url('/') }}" class="nav-link" target="_blank">
+                <i class="fas fa-external-link-alt"></i>
+                <span>View Website</span>
+            </a>
+        </div>
+        
+        @elseif(auth()->user()->isAdmin())
+        <!-- Admin Navigation -->
+        <div class="nav-item">
+            <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                <i class="fas fa-th-large"></i>
+                <span>Dashboard</span>
+            </a>
+        </div>
+        
+        <div class="nav-item">
+            <a href="#academicCalendarModal" class="nav-link" data-bs-toggle="modal">
+                <i class="fas fa-calendar-alt"></i>
+                <span>Academic Calendar</span>
+            </a>
+        </div>
+        
+        <div class="nav-item">
+            <a href="#girlsHairstylesModal" class="nav-link" data-bs-toggle="modal">
+                <i class="fas fa-cut"></i>
+                <span>Girls Hairstyles</span>
+            </a>
+        </div>
+        
+        <div class="nav-item">
+            <a href="#newsletterModal" class="nav-link" data-bs-toggle="modal">
+                <i class="fas fa-newspaper"></i>
+                <span>Newsletter</span>
+            </a>
+        </div>
+        
+        <div class="nav-item">
+            <a href="{{ url('/') }}" class="nav-link" target="_blank">
+                <i class="fas fa-external-link-alt"></i>
+                <span>View Website</span>
+            </a>
+        </div>
+        
+        @else
+        <!-- Other Roles Navigation -->
         <div class="nav-item">
             <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
                 <i class="fas fa-th-large"></i>
@@ -22,95 +98,15 @@
         </div>
         
         <div class="nav-item">
-            <a href="#" class="nav-link">
-                <i class="fas fa-file-alt"></i>
-                <span>Orders</span>
-                <span class="badge">46</span>
+            <a href="{{ url('/') }}" class="nav-link" target="_blank">
+                <i class="fas fa-external-link-alt"></i>
+                <span>View Website</span>
             </a>
         </div>
-        
-        <div class="nav-item">
-            <a href="#" class="nav-link">
-                <i class="fas fa-box"></i>
-                <span>Products</span>
-            </a>
-        </div>
-        
-        <div class="nav-item">
-            <a href="#" class="nav-link">
-                <i class="fas fa-users"></i>
-                <span>Students</span>
-            </a>
-        </div>
-        
-        <div class="nav-item">
-            <a href="#" class="nav-link">
-                <i class="fas fa-newspaper"></i>
-                <span>Content</span>
-            </a>
-        </div>
-        
-        <div class="nav-item">
-            <a href="{{ url('/') }}" class="nav-link">
-                <i class="fas fa-store"></i>
-                <span>Online Portal</span>
-            </a>
-        </div>
-
-        <div class="nav-section-title mt-3">Finance</div>
-        
-        <div class="nav-item">
-            <a href="#" class="nav-link">
-                <i class="fas fa-wallet"></i>
-                <span>Finances</span>
-            </a>
-        </div>
-        
-        <div class="nav-item">
-            <a href="#" class="nav-link">
-                <i class="fas fa-file-invoice-dollar"></i>
-                <span>Invoices</span>
-            </a>
-        </div>
-        
-        <div class="nav-item">
-            <a href="#" class="nav-link">
-                <i class="fas fa-exchange-alt"></i>
-                <span>Transactions</span>
-            </a>
-        </div>
-        
-        <div class="nav-item">
-            <a href="#" class="nav-link">
-                <i class="fas fa-chart-pie"></i>
-                <span>Reports</span>
-            </a>
-        </div>
-
-        <div class="nav-section-title mt-3">Analytics</div>
-        
-        <div class="nav-item">
-            <a href="#" class="nav-link">
-                <i class="fas fa-chart-line"></i>
-                <span>Analytics</span>
-            </a>
-        </div>
-        
-        <div class="nav-item">
-            <a href="#" class="nav-link">
-                <i class="fas fa-tags"></i>
-                <span>Discounts</span>
-            </a>
-        </div>
+        @endif
     </nav>
 
     <div class="sidebar-footer">
-        <div class="sidebar-upgrade-card">
-            <h5>Upgrade to Premium!</h5>
-            <p>Unlock all features and advanced analytics for your school.</p>
-            <button class="btn-upgrade">Upgrade Premium</button>
-        </div>
-        
         <form method="POST" action="{{ route('logout') }}" id="logout-form">
             @csrf
             <button type="submit" class="logout-btn mt-3" onclick="event.preventDefault(); if(confirm('Are you sure you want to logout?')) document.getElementById('logout-form').submit();">

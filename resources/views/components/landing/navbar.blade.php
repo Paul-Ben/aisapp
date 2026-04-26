@@ -12,10 +12,10 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto align-items-center">
                 <li class="nav-item">
-                    <a class="nav-link" href="#home">Home</a>
+                    <a class="nav-link" href="{{route('home')}}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#about">About Us</a>
+                    <a class="nav-link" href="{{ route('home') }}#about">About Us</a>
                 </li>
                 
                 <li class="nav-item dropdown">
@@ -23,9 +23,9 @@
                         Parent Resources
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Term Newsletter</a></li>
-                        <li><a class="dropdown-item" href="#">Term Calendar</a></li>
-                        <li><a class="dropdown-item" href="#">Girls Hairstyles</a></li>
+                        <li><a class="dropdown-item" href="{{ route('newsletter.show') }}">Term Newsletter</a></li>
+                        <li><a class="dropdown-item" href="{{ route('calendar.show') }}">Term Calendar</a></li>
+                        <li><a class="dropdown-item" href="{{ route('hairstyles.show') }}">Girls Hairstyles</a></li>
                         <li><a class="dropdown-item" href="#">Uniform Policy</a></li>
                         <li><a class="dropdown-item" href="#">Exam Timetable</a></li>
                         <li><a class="dropdown-item" href="#">Admission Process</a></li>
@@ -33,7 +33,7 @@
                 </li>
                 
                 <li class="nav-item">
-                    <a class="nav-link" href="#contact">Contact</a>
+                    <a class="nav-link" href="{{ route('home') }}#contact">Contact</a>
                 </li>
             
                 @if (Route::has('login'))
