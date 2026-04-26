@@ -6,6 +6,8 @@ use App\Http\Controllers\AcademicCalendarController;
 use App\Http\Controllers\GirlsHairstyleController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\UserManagementController;
+use App\Http\Controllers\Admin\StaffManagementController;
+use App\Http\Controllers\Admin\ClassManagementController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -71,9 +73,21 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::delete('/newsletter/delete', [NewsletterController::class, 'destroy'])->name('newsletter.delete');
     
     // Session and Term Management Routes
-    Route::post('/session/store', [AdminDashboardController::class, 'storeSession'])->name('admin.session.store');
-    Route::post('/session/{id}/set-active', [AdminDashboardController::class, 'setActiveSession'])->name('admin.session.set-active');
-    Route::delete('/session/{id}/delete', [AdminDashboardController::class, 'deleteSession'])->name('admin.session.delete');
+    Route::post('/session/store', [AdminDashboardController::class, 'storeSession'])->name('session.store');
+    Route::post('/session/{id}/set-active', [AdminDashboardController::class, 'setActiveSession'])->name('session.set-active');
+    Route::delete('/session/{id}/delete', [AdminDashboardController::class, 'deleteSession'])->name('session.delete');
+    
+    // Staff Management Routes
+    Route::resource('staff', StaffManagementController::class);
+    Route::post('/staff/{id}/toggle-status', [StaffManagementController::class, 'toggleStatus'])->name('staff.toggle-status');
+    
+    // Class Management Routes
+    Route::resource('classes', ClassManagementController::class);
+    Route::post('/class-categories', [ClassManagementController::class, 'storeCategory'])->name('class-categories.store');
+    Route::put('/class-categories/{id}', [ClassManagementController::class, 'updateCategory'])->name('class-categories.update');
+    Route::delete('/class-categories/{id}', [ClassManagementController::class, 'destroyCategory'])->name('class-categories.destroy');
+    Route::post('/classes/{class}/assign-staff', [ClassManagementController::class, 'assignStaff'])->name('classes.assign-staff');
+    Route::delete('/classes/{class}/remove-staff/{staff}', [ClassManagementController::class, 'removeStaff'])->name('classes.remove-staff');
 });
 
 // Exam Officer Dashboard Routes
