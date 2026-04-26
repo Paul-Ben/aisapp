@@ -41,7 +41,6 @@
                     <i class="fas fa-users fa-3x text-info mb-3"></i>
                     <h5 class="card-title">Staff Management</h5>
                     <p class="card-text">Manage teaching and non-teaching staff</p>
-                    <a href="#" class="btn btn-info">Manage Staff</a>
                     <a href="{{ route('admin.staff.index') }}" class="btn btn-info">Manage Staff</a>
                 </div>
             </div>
@@ -54,7 +53,7 @@
                     <i class="fas fa-user-graduate fa-3x text-primary mb-3"></i>
                     <h5 class="card-title">Student Management</h5>
                     <p class="card-text">Manage student records and admissions</p>
-                    <a href="#" class="btn btn-primary">Students</a>
+                    <a href="{{ route('admin.students.index') }}" class="btn btn-primary">Students</a>
                 </div>
             </div>
         </div>
@@ -66,20 +65,11 @@
                     <i class="fas fa-chalkboard-teacher fa-3x text-success mb-3"></i>
                     <h5 class="card-title">Class Management</h5>
                     <p class="card-text">Organize classes and timetables</p>
-                    <a href="#" class="btn btn-success">Classes</a>
                     <a href="{{ route('admin.classes.index') }}" class="btn btn-success">Classes</a>
                 </div>
             </div>
         </div>
 
-        <!-- Attendance Tracking -->
-        <div class="col-md-4">
-            <div class="card h-100">
-                <div class="card-body text-center">
-                    <i class="fas fa-clipboard-check fa-3x text-warning mb-3"></i>
-                    <h5 class="card-title">Attendance Tracking</h5>
-                    <p class="card-text">Monitor staff and student attendance</p>
-                    <a href="#" class="btn btn-warning">Attendance</a>
         <!-- Session and Term Management -->
         <div class="col-md-4">
             <div class="card h-100">
@@ -100,8 +90,6 @@
                 <div class="card-body text-center">
                     <i class="fas fa-calendar-alt fa-3x text-danger mb-3"></i>
                     <h5 class="card-title">Academic Calendar</h5>
-                    <p class="card-text">View and manage school calendar</p>
-                    <a href="#" class="btn btn-danger">Calendar</a>
                     <p class="card-text">Upload and manage school calendar</p>
                     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#academicCalendarModal">
                         Manage Calendar
@@ -124,14 +112,6 @@
             </div>
         </div>
 
-        <!-- Announcements -->
-        <div class="col-md-4">
-            <div class="card h-100">
-                <div class="card-body text-center">
-                    <i class="fas fa-bullhorn fa-3x text-secondary mb-3"></i>
-                    <h5 class="card-title">Announcements</h5>
-                    <p class="card-text">Post and manage announcements</p>
-                    <a href="#" class="btn btn-secondary">Announcements</a>
         <!-- Girls Hairstyles -->
         <div class="col-md-4">
             <div class="card h-100">
@@ -139,7 +119,7 @@
                     <i class="fas fa-cut fa-3x text-pink mb-3"></i>
                     <h5 class="card-title">Girls Hairstyles</h5>
                     <p class="card-text">Upload hairstyle guide for girls</p>
-                    <button type="button" class="btn btn-pink" data-bs-toggle="modal" data-bs-target="#girlsHairstylesModal">
+                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#girlsHairstylesModal">
                         Manage Hairstyles
                     </button>
                 </div>

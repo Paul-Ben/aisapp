@@ -46,12 +46,12 @@ class Student extends Model
 
     public function class()
     {
-        return $this->belongsTo(ClassModel::class, 'class_id');
+        return $this->belongsTo(SchoolClass::class, 'class_id');
     }
 
     public function previousClass()
     {
-        return $this->belongsTo(ClassModel::class, 'previous_class_id');
+        return $this->belongsTo(SchoolClass::class, 'previous_class_id');
     }
 
     public function getFullNameAttribute()

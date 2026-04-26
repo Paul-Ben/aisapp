@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Student;
-use App\Models\ClassModel;
+use App\Models\SchoolClass;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -43,7 +43,7 @@ class StudentController extends Controller
         }
 
         $students = $query->orderBy('created_at', 'desc')->paginate(15);
-        $classes = ClassModel::where('status', 'active')->orderBy('name')->get();
+        $classes = SchoolClass::where('is_active', true)->orderBy('name')->get();
 
         return view('admin.students.index', compact('students', 'classes', 'status'));
     }
@@ -53,7 +53,7 @@ class StudentController extends Controller
      */
     public function create()
     {
-        $classes = ClassModel::where('status', 'active')->orderBy('name')->get();
+        $classes = SchoolClass::where('is_active', true)->orderBy('name')->get();
         return view('admin.students.create', compact('classes'));
     }
 
@@ -111,7 +111,7 @@ class StudentController extends Controller
      */
     public function edit(Student $student)
     {
-        $classes = ClassModel::where('status', 'active')->orderBy('name')->get();
+        $classes = SchoolClass::where('is_active', true)->orderBy('name')->get();
         return view('admin.students.edit', compact('student', 'classes'));
     }
 
@@ -172,7 +172,7 @@ class StudentController extends Controller
      */
     public function showPromoteForm()
     {
-        $classes = ClassModel::where('status', 'active')->orderBy('name')->get();
+        $classes = SchoolClass::where('is_active', true)->orderBy('name')->get();
         return view('admin.students.promote', compact('classes'));
     }
 
@@ -301,7 +301,7 @@ class StudentController extends Controller
      */
     public function showUploadForm()
     {
-        $classes = ClassModel::where('status', 'active')->orderBy('name')->get();
+        $classes = SchoolClass::where('is_active', true)->orderBy('name')->get();
         return view('admin.students.upload', compact('classes'));
     }
 

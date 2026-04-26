@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::create('classes', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('arm')->nullable();
-            $table->integer('academic_year');
-            $table->enum('status', ['active', 'inactive'])->default('active');
+            $table->foreignId('class_category_id')->constrained()->onDelete('cascade');
+            $table->string('name'); // e.g., JSS1, Grade 5, Nursery 1
+            $table->string('arm')->nullable(); // e.g., A, B, Red, Blue
+            $table->integer('academic_year')->nullable();
+            $table->text('description')->nullable();
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }
