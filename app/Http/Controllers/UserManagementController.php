@@ -15,7 +15,7 @@ class UserManagementController extends Controller
     public function index()
     {
         $users = User::orderBy('created_at', 'desc')->get();
-        return view('dashboards.superadmin', compact('users'));
+        return view('superadmin.users', compact('users'));
     }
 
     /**
