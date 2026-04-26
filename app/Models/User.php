@@ -23,6 +23,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'is_active',
     ];
 
     /**
@@ -102,5 +103,29 @@ class User extends Authenticatable
     public function isProprietor(): bool
     {
         return $this->hasRole('proprietor');
+    }
+
+    /**
+     * Check if user is active
+     */
+    public function isActive(): bool
+    {
+        return $this->is_active === true;
+    }
+
+    /**
+     * Scope a query to only include active users.
+     */
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
+
+    /**
+     * Scope a query to only include inactive users.
+     */
+    public function scopeInactive($query)
+    {
+        return $query->where('is_active', false);
     }
 }
