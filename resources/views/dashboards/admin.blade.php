@@ -70,14 +70,16 @@
             </div>
         </div>
 
-        <!-- Attendance Tracking -->
+        <!-- Session and Term Management -->
         <div class="col-md-4">
             <div class="card h-100">
                 <div class="card-body text-center">
-                    <i class="fas fa-clipboard-check fa-3x text-warning mb-3"></i>
-                    <h5 class="card-title">Attendance Tracking</h5>
-                    <p class="card-text">Monitor staff and student attendance</p>
-                    <a href="#" class="btn btn-warning">Attendance</a>
+                    <i class="fas fa-calendar-check fa-3x text-warning mb-3"></i>
+                    <h5 class="card-title">Session and Term Management</h5>
+                    <p class="card-text">Set active academic session and term</p>
+                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#sessionTermModal">
+                        Manage Session & Term
+                    </button>
                 </div>
             </div>
         </div>
@@ -407,6 +409,159 @@
                     </button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- Session and Term Management Modal -->
+    <div class="modal fade" id="sessionTermModal" tabindex="-1" aria-labelledby="sessionTermModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="sessionTermModalLabel">
+                        <i class="fas fa-calendar-check text-warning me-2"></i>Session and Term Management
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    @if(session('error'))
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            {{ session('error') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    @endif
+
+                    <!-- Current Active Session Display -->
+                    @if($activeSession)
+                        <div class="alert alert-success mb-4">
+                            <strong><i class="fas fa-check-circle me-2"></i>Current Active Session:</strong> 
+                            {{ ucfirst($activeSession->term) }} Term, {{ $activeSession->session }}
+                        </div>
+                    @else
+                        <div class="alert alert-warning mb-4">
+                            <i class="fas fa-exclamation-triangle me-2"></i>No active session set. Please add and activate a session.
+                        </div>
+                    @endif
+
+                    <!-- Add New Session Form -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-warning text-dark">
+                            <i class="fas fa-plus-circle me-2"></i>Add New Session
+                        </div>
+                        <div class="card-body">
+                            <form action="{{ route('admin.session.store') }}" method="POST">
+                                @csrf
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="session" class="form-label">
+                                            <i class="fas fa-calendar me-1"></i>Academic Session
+                                        </label>
+                                        <input type="text" 
+                                               class="form-control @error('session') is-invalid @enderror" 
+                                               id="session" 
+                                               name="session" 
+                                               placeholder="e.g., 2025/2026"
+                                               value="{{ old('session') }}"
+                                               required>
+                                        <div class="form-text">Format: YYYY/YYYY (e.g., 2025/2026)</div>
+                                        @error('session')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="term" class="form-label">
+                                            <i class="fas fa-clock me-1"></i>Term
+                                        </label>
+                                        <select class="form-select @error('term') is-invalid @enderror" 
+                                                id="term" 
+                                                name="term"
+                                                required>
+                                            <option value="">Select Term</option>
+                                            <option value="first" {{ old('term') == 'first' ? 'selected' : '' }}>First Term</option>
+                                            <option value="second" {{ old('term') == 'second' ? 'selected' : '' }}>Second Term</option>
+                                            <option value="third" {{ old('term') == 'third' ? 'selected' : '' }}>Third Term</option>
+                                        </select>
+                                        @error('term')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-warning">
+                                    <i class="fas fa-plus me-1"></i>Add Session
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Existing Sessions List -->
+                    <div class="card">
+                        <div class="card-header bg-light">
+                            <i class="fas fa-list me-2"></i>All Academic Sessions
+                        </div>
+                        <div class="card-body">
+                            @if($allSessions && $allSessions->count() > 0)
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Session</th>
+                                                <th>Term</th>
+                                                <th>Status</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($allSessions as $sess)
+                                                <tr>
+                                                    <td>{{ $sess->session }}</td>
+                                                    <td>{{ ucfirst($sess->term) }} Term</td>
+                                                    <td>
+                                                        @if($sess->is_active)
+                                                            <span class="badge bg-success">
+                                                                <i class="fas fa-check me-1"></i>Active
+                                                            </span>
+                                                        @else
+                                                            <span class="badge bg-secondary">Inactive</span>
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        @if(!$sess->is_active)
+                                                            <form action="{{ route('admin.session.set-active', $sess->id) }}" method="POST" class="d-inline">
+                                                                @csrf
+                                                                <button type="submit" class="btn btn-sm btn-success" 
+                                                                        onclick="return confirm('Set {{ $sess->session }} ({{ ucfirst($sess->term) }}) as active?')">
+                                                                    <i class="fas fa-check me-1"></i>Set Active
+                                                                </button>
+                                                            </form>
+                                                        @endif
+                                                        @if(!$sess->is_active)
+                                                            <form action="{{ route('admin.session.delete', $sess->id) }}" method="POST" class="d-inline">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" class="btn btn-sm btn-outline-danger" 
+                                                                        onclick="return confirm('Delete this session?')">
+                                                                    <i class="fas fa-trash me-1"></i>Delete
+                                                                </button>
+                                                            </form>
+                                                        @endif
+                                                        @if($sess->is_active)
+                                                            <span class="text-muted small"><i>Cannot modify active session</i></span>
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            @else
+                                <p class="text-muted text-center">No sessions added yet.</p>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
