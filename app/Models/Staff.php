@@ -34,7 +34,7 @@ class Staff extends Model
 
     public function classes(): BelongsToMany
     {
-        return $this->belongsToMany(SchoolClass::class, 'class_staff')
+        return $this->belongsToMany(SchoolClass::class, 'class_staff', 'staff_id', 'class_id')
                     ->withPivot('role')
                     ->withTimestamps();
     }

@@ -1,4 +1,5 @@
 ```
+# Laravel-specific ignores
 # Dependency directories
 ```php
 Nothing needs to be added to the .gitignore file based on the provided changes. The listed files are all source code and view template files (.php, .blade.php) which should be tracked in version control. There are no build artifacts, dependency directories, or temporary files in the change list that would require ignoring.
@@ -20,15 +21,12 @@ __pycache__/
 node_modules/
 vendor/
 node_modules/
-
-# Laravel-specific
+public/storage
 bootstrap/cache/
-storage/framework/cache/
-storage/framework/sessions/
-storage/framework/views/
-public/storage/
-
-# Environment
+storage/logs/
+storage/framework/
+.npm
+.yarn
 .env
 .env.local
 .env.*
@@ -63,9 +61,11 @@ node_modules/
 # OS
 .DS_Store
 Thumbs.db
-
-# Logs
 *.log
+*.tmp
+.vscode/
+.idea/
+```
 
 # Compiled files
 *.phpc
