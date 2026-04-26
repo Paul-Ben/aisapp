@@ -15,11 +15,13 @@ class SchoolClass extends Model
         'name',
         'arm',
         'description',
+        'academic_year',
         'is_active',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
+        'academic_year' => 'integer',
     ];
 
     public function category(): BelongsTo

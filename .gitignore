@@ -1,5 +1,19 @@
 ```
 # Laravel-specific ignores
+vendor/
+node_modules/
+public/storage
+bootstrap/cache/
+storage/logs/
+storage/framework/
+.npm
+.yarn
+
+# Environment
+.env
+.env.local
+.env.*
+
 # Dependency directories
 ```php
 Nothing needs to be added to the .gitignore file based on the provided changes. The listed files are all source code and view template files (.php, .blade.php) which should be tracked in version control. There are no build artifacts, dependency directories, or temporary files in the change list that would require ignoring.
@@ -37,10 +51,18 @@ vendor/
 *.so
 *.a
 *.out
+dist/
+build/
+target/
 
 # Dependencies
-vendor/
-node_modules/
+.venv/
+venv/
+.mypy_cache/
+.pytest_cache/
+.gradle/
+julia-*/
+zig*/
 
 # IDE
 # Logs and temp files
@@ -48,6 +70,9 @@ node_modules/
 *.tmp
 *.swp
 *.swo
+coverage/
+htmlcov/
+.coverage
 
 # Environment
 .env
@@ -58,6 +83,7 @@ node_modules/
 .vscode/
 .idea/
 
+# System
 # OS
 .DS_Store
 Thumbs.db

@@ -53,7 +53,7 @@
                     <i class="fas fa-user-graduate fa-3x text-primary mb-3"></i>
                     <h5 class="card-title">Student Management</h5>
                     <p class="card-text">Manage student records and admissions</p>
-                    <a href="#" class="btn btn-primary">Students</a>
+                    <a href="{{ route('admin.students.index') }}" class="btn btn-primary">Students</a>
                 </div>
             </div>
         </div>
@@ -119,7 +119,7 @@
                     <i class="fas fa-cut fa-3x text-pink mb-3"></i>
                     <h5 class="card-title">Girls Hairstyles</h5>
                     <p class="card-text">Upload hairstyle guide for girls</p>
-                    <button type="button" class="btn btn-pink" data-bs-toggle="modal" data-bs-target="#girlsHairstylesModal">
+                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#girlsHairstylesModal">
                         Manage Hairstyles
                     </button>
                 </div>
