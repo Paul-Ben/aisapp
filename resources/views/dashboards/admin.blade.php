@@ -411,8 +411,9 @@
             </form>
         </div>
     </div>
+</div>
 
-    <!-- Session and Term Management Modal -->
+<!-- Session and Term Management Modal -->
     <div class="modal fade" id="sessionTermModal" tabindex="-1" aria-labelledby="sessionTermModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
