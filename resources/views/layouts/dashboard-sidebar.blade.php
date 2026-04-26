@@ -61,23 +61,23 @@
         </div>
         
         <div class="nav-item">
-            <a href="#academicCalendarModal" class="nav-link" data-bs-toggle="modal">
-                <i class="fas fa-calendar-alt"></i>
-                <span>Academic Calendar</span>
+            <a href="{{ route('admin.classes.index') }}" class="nav-link">
+                <i class="fas fa-chalkboard-teacher"></i>
+                <span>Manage Classes</span>
             </a>
         </div>
         
         <div class="nav-item">
-            <a href="#girlsHairstylesModal" class="nav-link" data-bs-toggle="modal">
-                <i class="fas fa-cut"></i>
-                <span>Girls Hairstyles</span>
+            <a href="{{ route('admin.staff.index') }}" class="nav-link">
+                <i class="fas fa-users"></i>
+                <span>Manage Staff</span>
             </a>
         </div>
         
         <div class="nav-item">
-            <a href="#newsletterModal" class="nav-link" data-bs-toggle="modal">
-                <i class="fas fa-newspaper"></i>
-                <span>Newsletter</span>
+            <a href="{{ route('admin.students.index') }}" class="nav-link">
+                <i class="fas fa-user-graduate"></i>
+                <span>Manage Students</span>
             </a>
         </div>
         

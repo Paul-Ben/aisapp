@@ -6,6 +6,7 @@ use App\Http\Controllers\AcademicCalendarController;
 use App\Http\Controllers\GirlsHairstyleController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\UserManagementController;
+use App\Http\Controllers\StudentController;
 use App\Http\Controllers\Admin\StaffManagementController;
 use App\Http\Controllers\Admin\ClassManagementController;
 use Illuminate\Support\Facades\Route;
@@ -69,14 +70,14 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     })->name('dashboard');
     
     // Student Management Routes
-    Route::resource('students', \App\Http\Controllers\StudentController::class);
-    Route::post('students/bulk-promote', [\App\Http\Controllers\StudentController::class, 'bulkPromote'])->name('students.bulk-promote');
-    Route::post('students/bulk-demote', [\App\Http\Controllers\StudentController::class, 'bulkDemote'])->name('students.bulk-demote');
-    Route::post('students/bulk-graduate', [\App\Http\Controllers\StudentController::class, 'bulkGraduate'])->name('students.bulk-graduate');
-    Route::get('students/upload', [\App\Http\Controllers\StudentController::class, 'showUploadForm'])->name('students.upload');
-    Route::post('students/process-upload', [\App\Http\Controllers\StudentController::class, 'processUpload'])->name('students.process-upload');
-    Route::get('students/download-template', [\App\Http\Controllers\StudentController::class, 'downloadTemplate'])->name('students.download-template');
-    Route::get('students/promote', [\App\Http\Controllers\StudentController::class, 'showPromoteForm'])->name('students.promote');
+    Route::get('students/upload', [StudentController::class, 'showUploadForm'])->name('students.upload');
+    Route::post('students/process-upload', [StudentController::class, 'processUpload'])->name('students.process-upload');
+    Route::get('students/download-template', [StudentController::class, 'downloadTemplate'])->name('students.download-template');
+    Route::get('students/promote', [StudentController::class, 'showPromoteForm'])->name('students.promote');
+    Route::post('students/bulk-promote', [StudentController::class, 'bulkPromote'])->name('students.bulk-promote');
+    Route::post('students/bulk-demote', [StudentController::class, 'bulkDemote'])->name('students.bulk-demote');
+    Route::post('students/bulk-graduate', [StudentController::class, 'bulkGraduate'])->name('students.bulk-graduate');
+    Route::resource('students', StudentController::class);
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
     Route::post('/calendar/upload', [AcademicCalendarController::class, 'upload'])->name('calendar.upload');
     Route::delete('/calendar/delete', [AcademicCalendarController::class, 'destroy'])->name('calendar.delete');
