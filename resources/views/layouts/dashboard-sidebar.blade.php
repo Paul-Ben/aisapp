@@ -75,9 +75,16 @@
         </div>
         
         <div class="nav-item">
-            <a href="{{ route('admin.students.index') }}" class="nav-link">
+            <a href="{{ route('admin.students.index') }}" class="nav-link {{ request()->routeIs('admin.students.index') ? 'active' : '' }}">
                 <i class="fas fa-user-graduate"></i>
                 <span>Manage Students</span>
+            </a>
+        </div>
+        
+        <div class="nav-item">
+            <a href="{{ route('admin.students.graduates') }}" class="nav-link {{ request()->routeIs('admin.students.graduates') ? 'active' : '' }}">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Graduates</span>
             </a>
         </div>
         

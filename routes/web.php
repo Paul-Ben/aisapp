@@ -9,6 +9,7 @@ use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\Admin\StaffManagementController;
 use App\Http\Controllers\Admin\ClassManagementController;
+use App\Http\Controllers\Admin\GraduateController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -77,6 +78,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::post('students/bulk-promote', [StudentController::class, 'bulkPromote'])->name('students.bulk-promote');
     Route::post('students/bulk-demote', [StudentController::class, 'bulkDemote'])->name('students.bulk-demote');
     Route::post('students/bulk-graduate', [StudentController::class, 'bulkGraduate'])->name('students.bulk-graduate');
+    Route::get('graduates', [GraduateController::class, 'index'])->name('students.graduates');
     Route::resource('students', StudentController::class);
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
     Route::post('/calendar/upload', [AcademicCalendarController::class, 'upload'])->name('calendar.upload');
