@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\ClassManagementController;
 use App\Http\Controllers\Admin\GraduateController;
 use App\Http\Controllers\Admin\ResultConfigController;
 use App\Http\Controllers\Admin\SubjectManagementController;
+use App\Http\Controllers\StaffClassesController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -135,6 +136,10 @@ Route::middleware(['auth', 'role:staff'])->prefix('staff')->name('staff.')->grou
     Route::get('/dashboard', function () {
         return view('dashboards.staff');
     })->name('dashboard');
+    
+    // Staff Classes Routes
+    Route::get('/my-classes', [StaffClassesController::class, 'index'])->name('classes.index');
+    Route::get('/my-classes/{classId}/students', [StaffClassesController::class, 'showStudents'])->name('classes.students');
 });
 
 // Proprietor Dashboard Routes

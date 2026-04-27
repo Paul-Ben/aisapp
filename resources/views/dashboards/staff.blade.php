@@ -23,7 +23,7 @@
                     <i class="fas fa-book fa-3x text-success mb-3"></i>
                     <h5 class="card-title">My Classes</h5>
                     <p class="card-text">View your assigned classes and subjects</p>
-                    <a href="#" class="btn btn-success">My Classes</a>
+                    <a href="{{ route('staff.classes.index') }}" class="btn btn-success">My Classes</a>
                 </div>
             </div>
         </div>
