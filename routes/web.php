@@ -10,6 +10,8 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\Admin\StaffManagementController;
 use App\Http\Controllers\Admin\ClassManagementController;
 use App\Http\Controllers\Admin\GraduateController;
+use App\Http\Controllers\Admin\ResultConfigController;
+use App\Http\Controllers\Admin\SubjectManagementController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -104,6 +106,21 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::delete('/class-categories/{id}', [ClassManagementController::class, 'destroyCategory'])->name('class-categories.destroy');
     Route::post('/classes/{class}/assign-staff', [ClassManagementController::class, 'assignStaff'])->name('classes.assign-staff');
     Route::delete('/classes/{class}/remove-staff/{staff}', [ClassManagementController::class, 'removeStaff'])->name('classes.remove-staff');
+
+    // Result Configuration Routes
+    Route::get('/result-config', [ResultConfigController::class, 'index'])->name('result-config.index');
+    Route::get('/result-config/{classId}/edit', [ResultConfigController::class, 'edit'])->name('result-config.edit');
+    Route::put('/result-config/{classId}', [ResultConfigController::class, 'update'])->name('result-config.update');
+    Route::get('/result-config/{classId}/grade/{percentage}', [ResultConfigController::class, 'getGrade'])->name('result-config.get-grade');
+
+    // Subject Management Routes
+    Route::get('/subjects', [SubjectManagementController::class, 'index'])->name('subjects.index');
+    Route::post('/subjects', [SubjectManagementController::class, 'store'])->name('subjects.store');
+    Route::put('/subjects/{id}', [SubjectManagementController::class, 'update'])->name('subjects.update');
+    Route::delete('/subjects/{id}', [SubjectManagementController::class, 'destroy'])->name('subjects.destroy');
+    Route::post('/subjects/class/{classId}/assign', [SubjectManagementController::class, 'assignToClass'])->name('subjects.assign-to-class');
+    Route::delete('/subjects/class/{classId}/remove/{subjectId}', [SubjectManagementController::class, 'removeFromClass'])->name('subjects.remove-from-class');
+    Route::get('/subjects/class/{classId}', [SubjectManagementController::class, 'getSubjectsForClass'])->name('subjects.get-for-class');
 });
 
 // Exam Officer Dashboard Routes

@@ -125,6 +125,30 @@
                 </div>
             </div>
         </div>
+
+        <!-- Result Configuration -->
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-cog fa-3x text-primary mb-3"></i>
+                    <h5 class="card-title">Result Config</h5>
+                    <p class="card-text">Configure result settings and grading scales for classes</p>
+                    <a href="{{ route('admin.result-config.index') }}" class="btn btn-primary">Manage Results</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Subject Management -->
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-book fa-3x text-success mb-3"></i>
+                    <h5 class="card-title">Subject Management</h5>
+                    <p class="card-text">Add, update and delete subjects for each class</p>
+                    <a href="{{ route('admin.subjects.index') }}" class="btn btn-success">Manage Subjects</a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
