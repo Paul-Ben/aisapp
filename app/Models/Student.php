@@ -30,6 +30,7 @@ class Student extends Model
         'status',
         'admission_date',
         'graduation_date',
+        'graduation_session_id',
         'parent_info',
         'guardian_info',
         'medical_info',
@@ -54,6 +55,11 @@ class Student extends Model
         return $this->belongsTo(SchoolClass::class, 'previous_class_id');
     }
 
+    public function graduationSession()
+    {
+        return $this->belongsTo(AcademicSession::class, 'graduation_session_id');
+    }
+
     public function getFullNameAttribute()
     {
         return trim($this->first_name . ' ' . $this->middle_name . ' ' . $this->last_name);
@@ -69,11 +75,12 @@ class Student extends Model
         return $this->status === 'graduated';
     }
 
-    public function graduate()
+    public function graduate($sessionId = null)
     {
         $this->update([
             'status' => 'graduated',
             'graduation_date' => now(),
+            'graduation_session_id' => $sessionId ?? AcademicSession::getActive()?->id,
         ]);
     }
 
