@@ -62,6 +62,7 @@
                                        type="checkbox" 
                                        name="project_enabled" 
                                        id="project_enabled"
+                                       value="1"
                                        {{ old('project_enabled', $resultConfig->project_enabled) ? 'checked' : '' }}>
                                 <label class="form-check-label" for="project_enabled">
                                     Enable Project Score

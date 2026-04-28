@@ -99,7 +99,7 @@
                                         @if($student->gender === 'male')
                                             <span class="badge bg-info"><i class="fas fa-male me-1"></i>Male</span>
                                         @elseif($student->gender === 'female')
-                                            <span class="badge bg-pink"><i class="fas fa-female me-1"></i>Female</span>
+                                            <span class="badge bg-danger"><i class="fas fa-female me-1"></i>Female</span>
                                         @else
                                             <span class="badge bg-secondary">N/A</span>
                                         @endif
