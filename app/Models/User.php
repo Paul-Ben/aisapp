@@ -112,6 +112,14 @@ class User extends Authenticatable
     {
         return $this->is_active === true;
     }
+    
+    /**
+     * Get the staff record associated with this user
+     */
+    public function staff()
+    {
+        return $this->hasOne(Staff::class, 'user_id');
+    }
 
     /**
      * Scope a query to only include active users.
