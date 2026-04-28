@@ -108,6 +108,9 @@ Route::middleware(['auth', 'role:staff'])->prefix('staff')->name('staff.')->grou
         Route::post('/{classId}/{subjectId}/process-upload', [StaffResultEntryController::class, 'processUpload'])->name('process-upload');
         Route::post('/{classId}/{subjectId}/manual-save', [StaffResultEntryController::class, 'manualSave'])->name('manual-save');
     });
+    // Staff Classes Routes
+    Route::get('/my-classes', [StaffClassesController::class, 'index'])->name('classes.index');
+    Route::get('/my-classes/{classId}/students', [StaffClassesController::class, 'showStudents'])->name('classes.students');
 });
 
 // Student Routes
