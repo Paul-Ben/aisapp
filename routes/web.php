@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\GraduateController;
 use App\Http\Controllers\Admin\ResultConfigController;
 use App\Http\Controllers\Admin\SubjectManagementController;
 use App\Http\Controllers\StaffClassesController;
+use App\Http\Controllers\StaffResultEntryController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,139 +21,114 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-// Public route to view academic calendar on landing page
-Route::get('/term-calendar', [AcademicCalendarController::class, 'show'])->name('calendar.show');
+Auth::routes();
 
-// Public route to view girls hairstyles on landing page
-Route::get('/girls-hairstyles', [GirlsHairstyleController::class, 'show'])->name('hairstyles.show');
-
-// Public route to view newsletter on landing page
-Route::get('/newsletter', [NewsletterController::class, 'show'])->name('newsletter.show');
-
-// Redirect authenticated users to their role-based dashboard
-Route::get('/dashboard', function () {
-    $user = Auth::user();
-
-    if ($user->isSuperAdmin()) {
-        return redirect()->route('superadmin.dashboard');
-    } elseif ($user->isFinanceOfficer()) {
-        return redirect()->route('finance.dashboard');
-    } elseif ($user->isAdmin()) {
-        return redirect()->route('admin.dashboard');
-    } elseif ($user->isExamOfficer()) {
-        return redirect()->route('exam.dashboard');
-    } elseif ($user->isProprietor()) {
-        return redirect()->route('proprietor.dashboard');
-    } else {
-        return redirect()->route('staff.dashboard');
-    }
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-// Super Admin Dashboard Routes
-Route::middleware(['auth', 'role:superadmin'])->prefix('superadmin')->name('superadmin.')->group(function () {
-    Route::get('/dashboard', function() {
-        return view('dashboards.superadmin');
-    })->name('dashboard');
+// Admin Routes
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+    
+    // User Management
     Route::get('/users', [UserManagementController::class, 'index'])->name('users.index');
+    Route::get('/users/create', [UserManagementController::class, 'create'])->name('users.create');
     Route::post('/users', [UserManagementController::class, 'store'])->name('users.store');
+    Route::get('/users/{user}/edit', [UserManagementController::class, 'edit'])->name('users.edit');
     Route::put('/users/{user}', [UserManagementController::class, 'update'])->name('users.update');
     Route::delete('/users/{user}', [UserManagementController::class, 'destroy'])->name('users.destroy');
-    Route::post('/users/{user}/toggle-status', [UserManagementController::class, 'toggleStatus'])->name('users.toggle-status');
-});
-
-// Finance Officer Dashboard Routes
-Route::middleware(['auth', 'role:finance_officer'])->prefix('finance')->name('finance.')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboards.finance');
-    })->name('dashboard');
-});
-
-// Admin Dashboard Routes
-Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboards.admin');
-    })->name('dashboard');
     
-    // Student Management Routes
-    Route::get('students/upload', [StudentController::class, 'showUploadForm'])->name('students.upload');
-    Route::post('students/process-upload', [StudentController::class, 'processUpload'])->name('students.process-upload');
-    Route::get('students/download-template', [StudentController::class, 'downloadTemplate'])->name('students.download-template');
-    Route::get('students/promote', [StudentController::class, 'showPromoteForm'])->name('students.promote');
-    Route::post('students/bulk-promote', [StudentController::class, 'bulkPromote'])->name('students.bulk-promote');
-    Route::post('students/bulk-demote', [StudentController::class, 'bulkDemote'])->name('students.bulk-demote');
-    Route::post('students/bulk-graduate', [StudentController::class, 'bulkGraduate'])->name('students.bulk-graduate');
-    Route::get('graduates', [GraduateController::class, 'index'])->name('students.graduates');
-    Route::resource('students', StudentController::class);
-    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
-    Route::post('/calendar/upload', [AcademicCalendarController::class, 'upload'])->name('calendar.upload');
-    Route::delete('/calendar/delete', [AcademicCalendarController::class, 'destroy'])->name('calendar.delete');
-    Route::post('/hairstyles/upload', [GirlsHairstyleController::class, 'upload'])->name('hairstyles.upload');
-    Route::delete('/hairstyles/delete', [GirlsHairstyleController::class, 'destroy'])->name('hairstyles.delete');
-    Route::post('/newsletter/upload', [NewsletterController::class, 'upload'])->name('newsletter.upload');
-    Route::delete('/newsletter/delete', [NewsletterController::class, 'destroy'])->name('newsletter.delete');
+    // Staff Management
+    Route::get('/staff', [StaffManagementController::class, 'index'])->name('staff.index');
+    Route::get('/staff/create', [StaffManagementController::class, 'create'])->name('staff.create');
+    Route::post('/staff', [StaffManagementController::class, 'store'])->name('staff.store');
+    Route::get('/staff/{staff}/edit', [StaffManagementController::class, 'edit'])->name('staff.edit');
+    Route::put('/staff/{staff}', [StaffManagementController::class, 'update'])->name('staff.update');
+    Route::delete('/staff/{staff}', [StaffManagementController::class, 'destroy'])->name('staff.destroy');
     
-    // Session and Term Management Routes
-    Route::post('/session/store', [AdminDashboardController::class, 'storeSession'])->name('session.store');
-    Route::post('/session/{id}/set-active', [AdminDashboardController::class, 'setActiveSession'])->name('session.set-active');
-    Route::delete('/session/{id}/delete', [AdminDashboardController::class, 'deleteSession'])->name('session.delete');
+    // Class Management
+    Route::get('/classes', [ClassManagementController::class, 'index'])->name('classes.index');
+    Route::get('/classes/create', [ClassManagementController::class, 'create'])->name('classes.create');
+    Route::post('/classes', [ClassManagementController::class, 'store'])->name('classes.store');
+    Route::get('/classes/{class}/edit', [ClassManagementController::class, 'edit'])->name('classes.edit');
+    Route::put('/classes/{class}', [ClassManagementController::class, 'update'])->name('classes.update');
+    Route::delete('/classes/{class}', [ClassManagementController::class, 'destroy'])->name('classes.destroy');
     
-    // Staff Management Routes
-    Route::resource('staff', StaffManagementController::class);
-    Route::post('/staff/{id}/toggle-status', [StaffManagementController::class, 'toggleStatus'])->name('staff.toggle-status');
-    
-    // Class Management Routes
-    Route::resource('classes', ClassManagementController::class);
-    Route::post('/class-categories', [ClassManagementController::class, 'storeCategory'])->name('class-categories.store');
-    Route::put('/class-categories/{id}', [ClassManagementController::class, 'updateCategory'])->name('class-categories.update');
-    Route::delete('/class-categories/{id}', [ClassManagementController::class, 'destroyCategory'])->name('class-categories.destroy');
-    Route::post('/classes/{class}/assign-staff', [ClassManagementController::class, 'assignStaff'])->name('classes.assign-staff');
-    Route::delete('/classes/{class}/remove-staff/{staff}', [ClassManagementController::class, 'removeStaff'])->name('classes.remove-staff');
-
-    // Result Configuration Routes
+    // Result Configuration
     Route::get('/result-config', [ResultConfigController::class, 'index'])->name('result-config.index');
-    Route::get('/result-config/{classId}/edit', [ResultConfigController::class, 'edit'])->name('result-config.edit');
-    Route::put('/result-config/{classId}', [ResultConfigController::class, 'update'])->name('result-config.update');
-    Route::get('/result-config/{classId}/grade/{percentage}', [ResultConfigController::class, 'getGrade'])->name('result-config.get-grade');
-
-    // Subject Management Routes
+    Route::get('/result-config/create', [ResultConfigController::class, 'create'])->name('result-config.create');
+    Route::post('/result-config', [ResultConfigController::class, 'store'])->name('result-config.store');
+    Route::get('/result-config/{config}/edit', [ResultConfigController::class, 'edit'])->name('result-config.edit');
+    Route::put('/result-config/{config}', [ResultConfigController::class, 'update'])->name('result-config.update');
+    Route::delete('/result-config/{config}', [ResultConfigController::class, 'destroy'])->name('result-config.destroy');
+    
+    // Subject Management
     Route::get('/subjects', [SubjectManagementController::class, 'index'])->name('subjects.index');
+    Route::get('/subjects/create', [SubjectManagementController::class, 'create'])->name('subjects.create');
     Route::post('/subjects', [SubjectManagementController::class, 'store'])->name('subjects.store');
-    Route::put('/subjects/{id}', [SubjectManagementController::class, 'update'])->name('subjects.update');
-    Route::delete('/subjects/{id}', [SubjectManagementController::class, 'destroy'])->name('subjects.destroy');
-    Route::post('/subjects/class/{classId}/assign', [SubjectManagementController::class, 'assignToClass'])->name('subjects.assign-to-class');
-    Route::delete('/subjects/class/{classId}/remove/{subjectId}', [SubjectManagementController::class, 'removeFromClass'])->name('subjects.remove-from-class');
-    Route::get('/subjects/class/{classId}', [SubjectManagementController::class, 'getSubjectsForClass'])->name('subjects.get-for-class');
+    Route::get('/subjects/{subject}/edit', [SubjectManagementController::class, 'edit'])->name('subjects.edit');
+    Route::put('/subjects/{subject}', [SubjectManagementController::class, 'update'])->name('subjects.update');
+    Route::delete('/subjects/{subject}', [SubjectManagementController::class, 'destroy'])->name('subjects.destroy');
+    
+    // Student Management
+    Route::resource('students', StudentController::class);
+    Route::post('/students/{student}/promote', [StudentController::class, 'promote'])->name('students.promote');
+    Route::post('/students/bulk-promote', [StudentController::class, 'bulkPromote'])->name('students.bulk-promote');
+    
+    // Graduates
+    Route::get('/graduates', [GraduateController::class, 'index'])->name('graduates.index');
+    Route::post('/students/{student}/graduate', [GraduateController::class, 'store'])->name('graduates.store');
+    
+    // Academic Calendar
+    Route::resource('academic-calendars', AcademicCalendarController::class);
+    
+    // Girls Hairstyle
+    Route::get('/hairstyles', [GirlsHairstyleController::class, 'index'])->name('hairstyles.index');
+    Route::post('/hairstyles', [GirlsHairstyleController::class, 'store'])->name('hairstyles.store');
+    Route::delete('/hairstyles/{hairstyle}', [GirlsHairstyleController::class, 'destroy'])->name('hairstyles.destroy');
+    
+    // Newsletter
+    Route::get('/newsletter', [NewsletterController::class, 'index'])->name('newsletter.index');
+    Route::post('/newsletter', [NewsletterController::class, 'store'])->name('newsletter.store');
 });
 
-// Exam Officer Dashboard Routes
-Route::middleware(['auth', 'role:exam_officer'])->prefix('exam')->name('exam.')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboards.exam');
-    })->name('dashboard');
-});
-
-// Staff Dashboard Routes
+// Staff Routes
 Route::middleware(['auth', 'role:staff'])->prefix('staff')->name('staff.')->group(function () {
-    Route::get('/dashboard', function () {
+    Route::get('/dashboard', function() {
         return view('dashboards.staff');
     })->name('dashboard');
     
+    // My Classes
+    Route::get('/my-classes', [StaffClassesController::class, 'index'])->name('classes.index');
+    Route::get('/my-classes/{classId}/students', [StaffClassesController::class, 'showStudents'])->name('classes.students');
+    
+    // Result Entry
+    Route::prefix('results')->name('results.')->group(function () {
+        Route::get('/', [StaffResultEntryController::class, 'index'])->name('index');
+        Route::get('/{classId}/subjects', [StaffResultEntryController::class, 'selectSubject'])->name('subjects');
+        Route::get('/{classId}/{subjectId}/upload', [StaffResultEntryController::class, 'uploadForm'])->name('upload');
+        Route::get('/{classId}/{subjectId}/download-template', [StaffResultEntryController::class, 'downloadTemplate'])->name('download-template');
+        Route::post('/{classId}/{subjectId}/process-upload', [StaffResultEntryController::class, 'processUpload'])->name('process-upload');
+        Route::post('/{classId}/{subjectId}/manual-save', [StaffResultEntryController::class, 'manualSave'])->name('manual-save');
+    });
     // Staff Classes Routes
     Route::get('/my-classes', [StaffClassesController::class, 'index'])->name('classes.index');
     Route::get('/my-classes/{classId}/students', [StaffClassesController::class, 'showStudents'])->name('classes.students');
 });
 
-// Proprietor Dashboard Routes
-Route::middleware(['auth', 'role:proprietor'])->prefix('proprietor')->name('proprietor.')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboards.proprietor');
+// Student Routes
+Route::middleware(['auth', 'role:student'])->prefix('student')->name('student.')->group(function () {
+    Route::get('/dashboard', function() {
+        return view('dashboards.student');
+    })->name('dashboard');
+    
+    Route::get('/results', function() {
+        return view('student.results');
+    })->name('results');
+});
+
+// Parent Routes
+Route::middleware(['auth', 'role:parent'])->prefix('parent')->name('parent.')->group(function () {
+    Route::get('/dashboard', function() {
+        return view('dashboards.parent');
     })->name('dashboard');
 });
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-
-require __DIR__.'/auth.php';
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
