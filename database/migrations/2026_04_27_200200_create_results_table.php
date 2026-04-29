@@ -10,10 +10,10 @@ return new class extends Migration
     {
         Schema::create('results', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('student_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('class_id')->constrained('school_classes')->onDelete('cascade');
+            $table->foreignId('student_id')->constrained('students')->onDelete('cascade');
+            $table->foreignId('class_id')->constrained('classes')->onDelete('cascade');
             $table->foreignId('subject_id')->constrained('subjects')->onDelete('cascade');
-            $table->foreignId('academic_year_id')->constrained('academic_years')->onDelete('cascade');
+            $table->foreignId('academic_year_id')->constrained('academic_sessions')->onDelete('cascade');
             $table->string('term')->default('First');
             $table->decimal('ca_score', 5, 2)->nullable();
             $table->decimal('project_score', 5, 2)->nullable();
@@ -21,10 +21,10 @@ return new class extends Migration
             $table->decimal('total_score', 5, 2);
             $table->string('grade')->nullable();
             $table->string('remark')->nullable();
-            $table->foreignId('entered_by')->constrained('staff')->onDelete('set null');
+            $table->foreignId('entered_by')->nullable()->constrained('staff')->onDelete('set null');
             $table->timestamps();
 
-            $table->unique(['student_id', 'class_id', 'subject_id', 'academic_year_id', 'term']);
+            $table->unique(['student_id', 'class_id', 'subject_id', 'academic_year_id', 'term'], 'results_main_unique');
         });
     }
 

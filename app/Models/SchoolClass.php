@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class SchoolClass extends Model
@@ -16,18 +17,28 @@ class SchoolClass extends Model
         'name',
         'arm',
         'description',
-        'academic_year',
+        'academic_year_id',
         'is_active',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
-        'academic_year' => 'integer',
+        'academic_year_id' => 'integer',
     ];
+
+    public function academicYear(): BelongsTo
+    {
+        return $this->belongsTo(AcademicSession::class, 'academic_year_id');
+    }
 
     public function category(): BelongsTo
     {
         return $this->belongsTo(ClassCategory::class, 'class_category_id');
+    }
+
+    public function students(): HasMany
+    {
+        return $this->hasMany(Student::class, 'class_id');
     }
 
     public function staff(): BelongsToMany
