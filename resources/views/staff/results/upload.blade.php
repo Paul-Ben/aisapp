@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.dashboard')
 
 @section('content')
 <div class="container-fluid">
@@ -46,7 +46,7 @@
                 <div class="col-md-3">
                     <strong>Max CA Score:</strong> {{ $resultConfig->max_ca_score }}
                 </div>
-                @if($resultConfig->has_project)
+                @if($resultConfig->project_enabled)
                 <div class="col-md-3">
                     <strong>Max Project Score:</strong> {{ $resultConfig->max_project_score }}
                 </div>
@@ -56,7 +56,7 @@
                 </div>
                 <div class="col-md-3">
                     <strong>Total:</strong> 
-                    {{ $resultConfig->max_ca_score + ($resultConfig->has_project ? $resultConfig->max_project_score : 0) + $resultConfig->max_exam_score }}
+                    {{ $resultConfig->max_ca_score + ($resultConfig->project_enabled ? $resultConfig->max_project_score : 0) + $resultConfig->max_exam_score }}
                 </div>
             </div>
         </div>
@@ -129,7 +129,7 @@
                                     <th>Admission No</th>
                                     <th>Student Name</th>
                                     <th>CA Score (Max: {{ $resultConfig->max_ca_score }})</th>
-                                    @if($resultConfig->has_project)
+                                    @if($resultConfig->project_enabled)
                                         <th>Project Score (Max: {{ $resultConfig->max_project_score }})</th>
                                     @endif
                                     <th>Exam Score (Max: {{ $resultConfig->max_exam_score }})</th>
@@ -149,7 +149,7 @@
                                                    value="{{ $existingResults[$student->id] ?? '' }}"
                                                    placeholder="0-{{ $resultConfig->max_ca_score }}">
                                         </td>
-                                        @if($resultConfig->has_project)
+                                        @if($resultConfig->project_enabled)
                                         <td>
                                             <input type="number" class="form-control score-input" 
                                                    name="scores[{{ $loop->index }}][project_score]" 
@@ -168,7 +168,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="{{ 4 + ($resultConfig->has_project ? 1 : 0) }}" class="text-center">
+                                        <td colspan="{{ 4 + ($resultConfig->project_enabled ? 1 : 0) }}" class="text-center">
                                             No students found in this class.
                                         </td>
                                     </tr>

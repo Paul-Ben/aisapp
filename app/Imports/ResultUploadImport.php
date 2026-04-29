@@ -6,7 +6,7 @@ use App\Models\SchoolClass;
 use App\Models\Subject;
 use App\Models\ResultConfig;
 use App\Models\Result;
-use App\Models\User;
+use App\Models\Student;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
@@ -18,21 +18,29 @@ class ResultUploadImport implements ToModel, WithHeadingRow, WithValidation
     protected $subject;
     protected $resultConfig;
     protected $enteredBy;
+    protected $academicSessionId;
+    protected $term;
 
-    public function __construct(SchoolClass $schoolClass, Subject $subject, ?ResultConfig $resultConfig, int $enteredBy)
+    public function __construct(SchoolClass $schoolClass, Subject $subject, ?ResultConfig $resultConfig, int $enteredBy, int $academicSessionId, string $term = 'First')
     {
         $this->schoolClass = $schoolClass;
         $this->subject = $subject;
         $this->resultConfig = $resultConfig;
         $this->enteredBy = $enteredBy;
+        $this->academicSessionId = $academicSessionId;
+        $this->term = $term;
     }
 
     public function model(array $row)
     {
-        // Find student by admission number
-        $student = User::where('admission_number', $row['admission_no'])
-            ->orWhere('admission_number', $row['admission number'])
-            ->first();
+        // Find student by admission number (slugified 'Admission No' becomes 'admission_no')
+        $admissionNo = $row['admission_no'] ?? $row['admission_number'] ?? null;
+        
+        if (!$admissionNo) {
+            return null;
+        }
+
+        $student = Student::where('admission_number', $admissionNo)->first();
 
         if (!$student) {
             return null; // Skip this row
@@ -47,7 +55,7 @@ class ResultUploadImport implements ToModel, WithHeadingRow, WithValidation
             throw new \Exception("CA score for {$student->full_name} exceeds maximum ({$this->resultConfig->max_ca_score})");
         }
         
-        if ($projectScore !== null && $this->resultConfig && $this->resultConfig->has_project && $projectScore > $this->resultConfig->max_project_score) {
+        if ($projectScore !== null && $this->resultConfig && $this->resultConfig->project_enabled && $projectScore > $this->resultConfig->max_project_score) {
             throw new \Exception("Project score for {$student->full_name} exceeds maximum ({$this->resultConfig->max_project_score})");
         }
         
@@ -63,8 +71,8 @@ class ResultUploadImport implements ToModel, WithHeadingRow, WithValidation
             'student_id' => $student->id,
             'class_id' => $this->schoolClass->id,
             'subject_id' => $this->subject->id,
-            'academic_year_id' => $this->schoolClass->academic_year_id,
-            'term' => 'First', // Default term, can be customized
+            'academic_year_id' => $this->academicSessionId,
+            'term' => $this->term,
             'ca_score' => $caScore,
             'project_score' => $projectScore,
             'exam_score' => $examScore,

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.dashboard')
 
 @section('content')
 <div class="container-fluid">
@@ -37,12 +37,12 @@
                 <div class="card-body">
                     <h5 class="card-title"><i class="fas fa-cog me-2"></i>Result Configuration</h5>
                     <p class="mb-1"><strong>Max CA Score:</strong> {{ $resultConfig->max_ca_score }}</p>
-                    @if($resultConfig->has_project)
+                    @if($resultConfig->project_enabled)
                         <p class="mb-1"><strong>Max Project Score:</strong> {{ $resultConfig->max_project_score }}</p>
                     @endif
                     <p class="mb-1"><strong>Max Exam Score:</strong> {{ $resultConfig->max_exam_score }}</p>
                     <p class="mb-0"><strong>Total Obtainable:</strong> 
-                        {{ $resultConfig->max_ca_score + ($resultConfig->has_project ? $resultConfig->max_project_score : 0) + $resultConfig->max_exam_score }}
+                        {{ $resultConfig->max_ca_score + ($resultConfig->project_enabled ? $resultConfig->max_project_score : 0) + $resultConfig->max_exam_score }}
                     </p>
                 </div>
             </div>

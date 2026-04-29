@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('class_category_id')->constrained()->onDelete('cascade');
             $table->string('name'); // e.g., JSS1, Grade 5, Nursery 1
             $table->string('arm')->nullable(); // e.g., A, B, Red, Blue
-            $table->integer('academic_year')->nullable();
+            $table->foreignId('academic_year_id')->nullable()->constrained('academic_sessions')->onDelete('set null');
             $table->text('description')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();

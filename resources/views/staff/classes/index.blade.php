@@ -74,7 +74,7 @@
                         <div class="card-footer bg-white border-top-0">
                             <small class="text-muted">
                                 <i class="fas fa-calendar me-1"></i>
-                                Academic Year: {{ $class->academic_year }}
+                                Academic Year: {{ $class->academicYear->session ?? 'N/A' }}
                             </small>
                         </div>
                     </div>

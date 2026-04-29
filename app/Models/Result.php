@@ -49,7 +49,7 @@ class Result extends Model
 
     public function academicYear(): BelongsTo
     {
-        return $this->belongsTo(AcademicYear::class);
+        return $this->belongsTo(AcademicSession::class, 'academic_year_id');
     }
 
     public function enteredBy(): BelongsTo

@@ -33,7 +33,7 @@ class ResultUploadTemplate implements FromCollection, WithHeadings, WithMapping,
     {
         $headings = ['Admission No', 'Student Name', 'CA Score'];
         
-        if ($this->resultConfig && $this->resultConfig->has_project) {
+        if ($this->resultConfig && $this->resultConfig->project_enabled) {
             $headings[] = 'Project Score';
         }
         
@@ -50,7 +50,7 @@ class ResultUploadTemplate implements FromCollection, WithHeadings, WithMapping,
             '', // CA Score - empty for input
         ];
 
-        if ($this->resultConfig && $this->resultConfig->has_project) {
+        if ($this->resultConfig && $this->resultConfig->project_enabled) {
             $row[] = ''; // Project Score - empty for input
         }
 
