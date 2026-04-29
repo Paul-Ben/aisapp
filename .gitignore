@@ -12,17 +12,14 @@ build/
 vendor/
 node_modules/
 composer.lock
+.env
+
 
 # Logs and temp files
 *.log
 *.tmp
 *.swp
 *.swo
-
-# Environment
-.env
-.env.local
-.env.*
 
 # Editors
 .vscode/
@@ -34,8 +31,22 @@ composer.lock
 .DS_Store
 Thumbs.db
 
+# Testing
+.coverage
+coverage/
+htmlcov/
+.nyc_output/
+.mypy_cache/
+.pytest_cache/
+.hypothesis/
+
 # Laravel specific
 bootstrap/cache/
+storage/
+public/storage
+*.blade.php.bak
+
+# Compression archives
 storage/framework/cache/
 storage/logs/
 public/storage/

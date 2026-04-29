@@ -71,7 +71,7 @@
                     <i class="fas fa-star fa-3x text-danger mb-3"></i>
                     <h5 class="card-title">Enter Results</h5>
                     <p class="card-text">Submit exam scores and grades</p>
-                    <a href="#" class="btn btn-danger">Results</a>
+                    <a href="{{ route('staff.results.index') }}" class="btn btn-danger">Results</a>
                 </div>
             </div>
         </div>
