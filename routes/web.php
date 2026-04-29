@@ -168,6 +168,20 @@ Route::get('/dashboard', function () {
     return redirect()->route('home');
 })->middleware(['auth'])->name('dashboard');
 
+// Finance Routes
+Route::middleware(['auth', 'role:finance_officer'])->prefix('finance')->name('finance.')->group(function () {
+    Route::get('/dashboard', function() {
+        return view('dashboards.finance');
+    })->name('dashboard');
+});
+
+// Exam Officer Routes
+Route::middleware(['auth', 'role:exam_officer'])->prefix('exam')->name('exam.')->group(function () {
+    Route::get('/dashboard', function() {
+        return view('dashboards.exam');
+    })->name('dashboard');
+});
+
 // Super Admin Routes
 Route::middleware(['auth', 'role:superadmin'])->prefix('superadmin')->name('superadmin.')->group(function () {
     Route::get('/dashboard', function() {
