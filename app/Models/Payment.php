@@ -18,11 +18,16 @@ class Payment extends Model
         'notes',
         'paid_at',
         'recorded_by',
+        'gateway',
+        'gateway_reference',
+        'gateway_channel',
+        'gateway_response',
     ];
 
     protected $casts = [
         'amount_paid' => 'decimal:2',
         'paid_at' => 'date',
+        'gateway_response' => 'array',
     ];
 
     public function student(): BelongsTo

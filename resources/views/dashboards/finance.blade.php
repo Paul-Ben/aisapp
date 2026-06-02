@@ -23,7 +23,7 @@
                     <i class="fas fa-chart-bar fa-3x text-success mb-3"></i>
                     <h5 class="card-title">Revenue Tracking</h5>
                     <p class="card-text">Monitor income and revenue streams</p>
-                    <a href="#" class="btn btn-success">View Revenue</a>
+                    <a href="{{ route('finance.revenue.index') }}" class="btn btn-success">View Revenue</a>
                 </div>
             </div>
         </div>

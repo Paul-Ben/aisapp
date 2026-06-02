@@ -10,8 +10,10 @@ use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Finance\FeeCollectionController;
 use App\Http\Controllers\Finance\FeeManagementController;
+use App\Http\Controllers\Finance\RevenueTrackingController;
 use App\Http\Controllers\GirlsHairstyleController;
 use App\Http\Controllers\NewsletterController;
+use App\Http\Controllers\OnlinePaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StaffClassesController;
 use App\Http\Controllers\StaffResultEntryController;
@@ -26,6 +28,16 @@ Route::get('/', function () {
 Route::get('/newsletter', [NewsletterController::class, 'show'])->name('newsletter.show');
 Route::get('/academic-calendar', [AcademicCalendarController::class, 'show'])->name('calendar.show');
 Route::get('/girls-hairstyles', [GirlsHairstyleController::class, 'show'])->name('hairstyles.show');
+
+// Public Paystack Online Payment Flow
+Route::prefix('pay-online')->name('pay-online.')->group(function () {
+    Route::get('/', [OnlinePaymentController::class, 'search'])->name('search');
+    Route::get('/{student}/fees', [OnlinePaymentController::class, 'fees'])->name('fees');
+    Route::post('/{student}/{fee}/initialize', [OnlinePaymentController::class, 'initialize'])->name('initialize');
+    Route::get('/callback', [OnlinePaymentController::class, 'callback'])->name('callback');
+    Route::get('/receipt/{payment}', [OnlinePaymentController::class, 'receipt'])->name('receipt');
+    Route::get('/receipt/{payment}/pdf', [OnlinePaymentController::class, 'receiptPdf'])->name('receipt.pdf');
+});
 
 // Admin Routes
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
@@ -172,6 +184,8 @@ Route::middleware(['auth', 'role:finance_officer'])->prefix('finance')->name('fi
     Route::get('/payments/{student}', [FeeCollectionController::class, 'student'])->name('payments.student');
     Route::get('/payments/{student}/{fee}', [FeeCollectionController::class, 'form'])->name('payments.form');
     Route::put('/payments/{student}/{fee}', [FeeCollectionController::class, 'save'])->name('payments.save');
+
+    Route::get('/revenue', [RevenueTrackingController::class, 'index'])->name('revenue.index');
 });
 
 // Exam Officer Routes

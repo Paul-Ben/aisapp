@@ -119,6 +119,13 @@
         </div>
 
         <div class="nav-item">
+            <a href="{{ route('finance.revenue.index') }}" class="nav-link {{ request()->routeIs('finance.revenue.*') ? 'active' : '' }}">
+                <i class="fas fa-chart-bar"></i>
+                <span>Revenue Tracking</span>
+            </a>
+        </div>
+
+        <div class="nav-item">
             <a href="{{ url('/') }}" class="nav-link" target="_blank">
                 <i class="fas fa-external-link-alt"></i>
                 <span>View Website</span>
