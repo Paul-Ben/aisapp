@@ -59,7 +59,7 @@
                     <i class="fas fa-money-bill-wave fa-3x text-warning mb-3"></i>
                     <h5 class="card-title">Fee Collection</h5>
                     <p class="card-text">Manage student fee collections</p>
-                    <a href="#" class="btn btn-warning">Fees</a>
+                    <a href="{{ route('finance.payments.index') }}" class="btn btn-warning">Fees</a>
                 </div>
             </div>
         </div>

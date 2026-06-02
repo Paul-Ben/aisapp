@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\StaffManagementController;
 use App\Http\Controllers\Admin\SubjectManagementController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Finance\FeeCollectionController;
 use App\Http\Controllers\Finance\FeeManagementController;
 use App\Http\Controllers\GirlsHairstyleController;
 use App\Http\Controllers\NewsletterController;
@@ -166,6 +167,11 @@ Route::middleware(['auth', 'role:finance_officer'])->prefix('finance')->name('fi
     })->name('dashboard');
 
     Route::resource('fees', FeeManagementController::class)->except(['show']);
+
+    Route::get('/payments', [FeeCollectionController::class, 'index'])->name('payments.index');
+    Route::get('/payments/{student}', [FeeCollectionController::class, 'student'])->name('payments.student');
+    Route::get('/payments/{student}/{fee}', [FeeCollectionController::class, 'form'])->name('payments.form');
+    Route::put('/payments/{student}/{fee}', [FeeCollectionController::class, 'save'])->name('payments.save');
 });
 
 // Exam Officer Routes

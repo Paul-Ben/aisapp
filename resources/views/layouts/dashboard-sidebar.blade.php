@@ -112,6 +112,13 @@
         </div>
 
         <div class="nav-item">
+            <a href="{{ route('finance.payments.index') }}" class="nav-link {{ request()->routeIs('finance.payments.*') ? 'active' : '' }}">
+                <i class="fas fa-money-bill-wave"></i>
+                <span>Fee Collection</span>
+            </a>
+        </div>
+
+        <div class="nav-item">
             <a href="{{ url('/') }}" class="nav-link" target="_blank">
                 <i class="fas fa-external-link-alt"></i>
                 <span>View Website</span>
