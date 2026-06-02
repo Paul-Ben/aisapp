@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\StaffManagementController;
 use App\Http\Controllers\Admin\SubjectManagementController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Finance\FeeManagementController;
 use App\Http\Controllers\GirlsHairstyleController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\ProfileController;
@@ -163,6 +164,8 @@ Route::middleware(['auth', 'role:finance_officer'])->prefix('finance')->name('fi
     Route::get('/dashboard', function () {
         return view('dashboards.finance');
     })->name('dashboard');
+
+    Route::resource('fees', FeeManagementController::class)->except(['show']);
 });
 
 // Exam Officer Routes

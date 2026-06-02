@@ -64,6 +64,18 @@
             </div>
         </div>
 
+        <!-- Fee Management -->
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-receipt fa-3x text-dark mb-3"></i>
+                    <h5 class="card-title">Fee Management</h5>
+                    <p class="card-text">Configure and manage fee structures</p>
+                    <a href="{{ route('finance.fees.index') }}" class="btn btn-dark">Manage</a>
+                </div>
+            </div>
+        </div>
+
         <!-- Payroll -->
         <div class="col-md-4">
             <div class="card h-100">

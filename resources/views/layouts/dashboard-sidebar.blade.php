@@ -95,6 +95,29 @@
             </a>
         </div>
         
+        @elseif(auth()->user()->isFinanceOfficer())
+        <!-- Finance Officer Navigation -->
+        <div class="nav-item">
+            <a href="{{ route('finance.dashboard') }}" class="nav-link {{ request()->routeIs('finance.dashboard') ? 'active' : '' }}">
+                <i class="fas fa-th-large"></i>
+                <span>Dashboard</span>
+            </a>
+        </div>
+
+        <div class="nav-item">
+            <a href="{{ route('finance.fees.index') }}" class="nav-link {{ request()->routeIs('finance.fees.*') ? 'active' : '' }}">
+                <i class="fas fa-receipt"></i>
+                <span>Fee Management</span>
+            </a>
+        </div>
+
+        <div class="nav-item">
+            <a href="{{ url('/') }}" class="nav-link" target="_blank">
+                <i class="fas fa-external-link-alt"></i>
+                <span>View Website</span>
+            </a>
+        </div>
+
         @else
         <!-- Other Roles Navigation -->
         <div class="nav-item">
@@ -103,7 +126,7 @@
                 <span>Dashboard</span>
             </a>
         </div>
-        
+
         <div class="nav-item">
             <a href="{{ url('/') }}" class="nav-link" target="_blank">
                 <i class="fas fa-external-link-alt"></i>
