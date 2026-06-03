@@ -74,6 +74,11 @@
                 <i class="fas fa-keyboard me-2"></i>Manual Entry
             </button>
         </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="preview-tab" data-bs-toggle="tab" data-bs-target="#preview" type="button">
+                <i class="fas fa-eye me-2"></i>Preview
+            </button>
+        </li>
     </ul>
 
     <div class="tab-content" id="uploadTabsContent">
@@ -113,11 +118,11 @@
 
         <!-- Manual Entry Tab -->
         <div class="tab-pane fade" id="manual" role="tabpanel">
-            <form action="{{ route('staff.results.manual-save', ['classId' => $schoolClass->id, 'subjectId' => $subject->id]) }}" 
+            <form action="{{ route('staff.results.manual-save', ['classId' => $schoolClass->id, 'subjectId' => $subject->id]) }}"
                   method="POST">
                 @csrf
                 <input type="hidden" name="term" value="First">
-                
+
                 <div class="card">
                     <div class="card-header bg-primary text-white">
                         <h5 class="mb-0"><i class="fas fa-edit me-2"></i>Enter Scores Manually</h5>
@@ -142,26 +147,26 @@
                                         <td>{{ $student->full_name }}</td>
                                         <input type="hidden" name="scores[{{ $loop->index }}][student_id]" value="{{ $student->id }}">
                                         <td>
-                                            <input type="number" class="form-control score-input" 
-                                                   name="scores[{{ $loop->index }}][ca_score]" 
-                                                   min="0" max="{{ $resultConfig->max_ca_score }}" 
-                                                   step="0.01" 
+                                            <input type="number" class="form-control score-input"
+                                                   name="scores[{{ $loop->index }}][ca_score]"
+                                                   min="0" max="{{ $resultConfig->max_ca_score }}"
+                                                   step="0.01"
                                                    value="{{ $existingResults[$student->id] ?? '' }}"
                                                    placeholder="0-{{ $resultConfig->max_ca_score }}">
                                         </td>
                                         @if($resultConfig->project_enabled)
                                         <td>
-                                            <input type="number" class="form-control score-input" 
-                                                   name="scores[{{ $loop->index }}][project_score]" 
-                                                   min="0" max="{{ $resultConfig->max_project_score }}" 
+                                            <input type="number" class="form-control score-input"
+                                                   name="scores[{{ $loop->index }}][project_score]"
+                                                   min="0" max="{{ $resultConfig->max_project_score }}"
                                                    step="0.01"
                                                    placeholder="0-{{ $resultConfig->max_project_score }}">
                                         </td>
                                         @endif
                                         <td>
-                                            <input type="number" class="form-control score-input" 
-                                                   name="scores[{{ $loop->index }}][exam_score]" 
-                                                   min="0" max="{{ $resultConfig->max_exam_score }}" 
+                                            <input type="number" class="form-control score-input"
+                                                   name="scores[{{ $loop->index }}][exam_score]"
+                                                   min="0" max="{{ $resultConfig->max_exam_score }}"
                                                    step="0.01"
                                                    placeholder="0-{{ $resultConfig->max_exam_score }}">
                                         </td>
@@ -183,6 +188,11 @@
                     </div>
                 </div>
             </form>
+        </div>
+
+        <!-- Preview Tab -->
+        <div class="tab-pane fade" id="preview" role="tabpanel">
+            @include('staff.results._preview-tab')
         </div>
     </div>
 </div>
