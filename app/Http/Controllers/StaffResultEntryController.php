@@ -2,26 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Student;
-use App\Models\SchoolClass;
-use App\Models\Subject;
-use App\Models\ResultConfig;
+use App\Exports\ResultUploadTemplate;
+use App\Imports\ResultUploadImport;
+use App\Models\AcademicSession;
 use App\Models\GradeScale;
 use App\Models\Result;
+use App\Models\ResultConfig;
+use App\Models\SchoolClass;
+use App\Models\Student;
+use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Exports\ResultUploadTemplate;
-use App\Imports\ResultUploadImport;
 
 class StaffResultEntryController extends Controller
 {
     public function index()
     {
         $staff = Auth::user()->staff;
-        
-        if (!$staff) {
+
+        if (! $staff) {
             return redirect()->back()->with('error', 'Staff profile not found.');
         }
 
@@ -37,7 +38,7 @@ class StaffResultEntryController extends Controller
         $schoolClass = SchoolClass::with(['category', 'academicYear', 'students'])->findOrFail($classId);
 
         // Verify staff is assigned to this class
-        if (!$staff->classes()->where('classes.id', $classId)->exists()) {
+        if (! $staff->classes()->where('classes.id', $classId)->exists()) {
             abort(403, 'You are not assigned to this class.');
         }
 
@@ -47,7 +48,7 @@ class StaffResultEntryController extends Controller
         // Get result config for this class
         $resultConfig = ResultConfig::where('class_id', $classId)->first();
 
-        if (!$resultConfig) {
+        if (! $resultConfig) {
             return redirect()->route('staff.results.index')
                 ->with('error', 'Result configuration not set for this class by Admin.');
         }
@@ -62,30 +63,74 @@ class StaffResultEntryController extends Controller
         $subject = Subject::findOrFail($subjectId);
 
         // Verify staff assignment
-        if (!$staff->classes()->where('classes.id', $classId)->exists()) {
+        if (! $staff->classes()->where('classes.id', $classId)->exists()) {
             abort(403, 'Unauthorized access.');
         }
 
         // Verify subject belongs to class
-        if (!$schoolClass->subjects()->where('subjects.id', $subjectId)->exists()) {
+        if (! $schoolClass->subjects()->where('subjects.id', $subjectId)->exists()) {
             abort(403, 'Subject not assigned to this class.');
         }
 
         $resultConfig = ResultConfig::where('class_id', $classId)->first();
-        
-        $activeAcademicSession = \App\Models\AcademicSession::getActive();
-        
-        // Get existing results if any
+
+        $activeAcademicSession = AcademicSession::getActive();
+
+        // Get existing CA scores if any (for the manual entry form to pre-populate)
         $existingResults = [];
+        $uploadedResults = collect();
+        $missingStudents = collect();
+        $resultStats = [
+            'count' => 0,
+            'class_size' => $schoolClass->students->count(),
+            'missing_count' => 0,
+            'average' => null,
+            'highest' => null,
+            'lowest' => null,
+            'grade_distribution' => collect(),
+        ];
+
         if ($activeAcademicSession) {
             $existingResults = Result::where('class_id', $classId)
                 ->where('subject_id', $subjectId)
                 ->where('academic_year_id', $activeAcademicSession->id)
                 ->pluck('ca_score', 'student_id')
                 ->toArray();
+
+            $uploadedResults = Result::with('student')
+                ->where('class_id', $classId)
+                ->where('subject_id', $subjectId)
+                ->where('academic_year_id', $activeAcademicSession->id)
+                ->where('term', $activeAcademicSession->term)
+                ->orderBy('student_id')
+                ->get();
+
+            $studentIdsWithResults = $uploadedResults->pluck('student_id')->all();
+            $missingStudents = $schoolClass->students
+                ->whereNotIn('id', $studentIdsWithResults)
+                ->values();
+
+            $resultStats = [
+                'count' => $uploadedResults->count(),
+                'class_size' => $schoolClass->students->count(),
+                'missing_count' => $missingStudents->count(),
+                'average' => $uploadedResults->avg('total_score'),
+                'highest' => $uploadedResults->max('total_score'),
+                'lowest' => $uploadedResults->min('total_score'),
+                'grade_distribution' => $uploadedResults->groupBy('grade')->map->count(),
+            ];
         }
 
-        return view('staff.results.upload', compact('schoolClass', 'subject', 'resultConfig', 'existingResults'));
+        return view('staff.results.upload', compact(
+            'schoolClass',
+            'subject',
+            'resultConfig',
+            'existingResults',
+            'activeAcademicSession',
+            'uploadedResults',
+            'missingStudents',
+            'resultStats',
+        ));
     }
 
     public function downloadTemplate($classId, $subjectId)
@@ -95,13 +140,13 @@ class StaffResultEntryController extends Controller
         $subject = Subject::findOrFail($subjectId);
 
         // Verify staff assignment
-        if (!$staff->classes()->where('classes.id', $classId)->exists()) {
+        if (! $staff->classes()->where('classes.id', $classId)->exists()) {
             abort(403, 'Unauthorized access.');
         }
 
         $resultConfig = ResultConfig::where('class_id', $classId)->first();
-        
-        return Excel::download(new ResultUploadTemplate($schoolClass, $subject, $resultConfig), 
+
+        return Excel::download(new ResultUploadTemplate($schoolClass, $subject, $resultConfig),
             "result_template_{$subject->code}_{$schoolClass->name}.xlsx");
     }
 
@@ -114,15 +159,15 @@ class StaffResultEntryController extends Controller
         $staff = Auth::user()->staff;
         $schoolClass = SchoolClass::findOrFail($classId);
         $subject = Subject::findOrFail($subjectId);
-        
-        $activeAcademicSession = \App\Models\AcademicSession::getActive();
 
-        if (!$activeAcademicSession) {
+        $activeAcademicSession = AcademicSession::getActive();
+
+        if (! $activeAcademicSession) {
             return redirect()->back()->with('error', 'No active academic session found. Please set one in Admin Dashboard.');
         }
 
         // Verify staff assignment
-        if (!$staff->classes()->where('classes.id', $classId)->exists()) {
+        if (! $staff->classes()->where('classes.id', $classId)->exists()) {
             abort(403, 'Unauthorized access.');
         }
 
@@ -130,12 +175,12 @@ class StaffResultEntryController extends Controller
 
         try {
             Excel::import(new ResultUploadImport($schoolClass, $subject, $resultConfig, $staff->id, $activeAcademicSession->id, $activeAcademicSession->term), $request->file('excel_file'));
-            
+
             return redirect()->route('staff.results.subjects', ['classId' => $classId])
                 ->with('success', 'Results uploaded successfully!');
         } catch (\Exception $e) {
             return redirect()->back()
-                ->with('error', 'Error uploading results: ' . $e->getMessage());
+                ->with('error', 'Error uploading results: '.$e->getMessage());
         }
     }
 
@@ -152,17 +197,17 @@ class StaffResultEntryController extends Controller
         $staff = Auth::user()->staff;
         $schoolClass = SchoolClass::findOrFail($classId);
         $subject = Subject::findOrFail($subjectId);
-        
-        $activeAcademicSession = \App\Models\AcademicSession::getActive();
 
-        if (!$activeAcademicSession) {
+        $activeAcademicSession = AcademicSession::getActive();
+
+        if (! $activeAcademicSession) {
             return redirect()->back()->with('error', 'No active academic session found. Please set one in Admin Dashboard.');
         }
-        
+
         $resultConfig = ResultConfig::where('class_id', $classId)->first();
 
         // Verify staff assignment
-        if (!$staff->classes()->where('classes.id', $classId)->exists()) {
+        if (! $staff->classes()->where('classes.id', $classId)->exists()) {
             abort(403, 'Unauthorized access.');
         }
 
@@ -170,7 +215,7 @@ class StaffResultEntryController extends Controller
         try {
             foreach ($request->scores as $scoreData) {
                 $student = Student::findOrFail($scoreData['student_id']);
-                
+
                 // Validate scores against config
                 $caScore = $scoreData['ca_score'] ?? null;
                 $projectScore = $scoreData['project_score'] ?? null;
@@ -187,7 +232,7 @@ class StaffResultEntryController extends Controller
                 }
 
                 $totalScore = ($caScore ?? 0) + ($projectScore ?? 0) + ($examScore ?? 0);
-                
+
                 // Determine Grade
                 $grade = $this->calculateGrade($totalScore, $resultConfig);
 
@@ -212,9 +257,11 @@ class StaffResultEntryController extends Controller
             }
 
             DB::commit();
+
             return redirect()->back()->with('success', 'Results saved successfully!');
         } catch (\Exception $e) {
             DB::rollBack();
+
             return redirect()->back()->with('error', $e->getMessage());
         }
     }
@@ -242,8 +289,9 @@ class StaffResultEntryController extends Controller
             'C' => 'Good',
             'D' => 'Fair',
             'E' => 'Pass',
-            'F' => 'Fail'
+            'F' => 'Fail',
         ];
+
         return $remarks[$grade] ?? 'No Grade';
     }
 }
