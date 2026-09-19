@@ -46,11 +46,11 @@
                             <a href="{{ route('login') }}" class="nav-link">Log in</a>
                         </li>
 
-                        @if (Route::has('register'))
+                        {{-- @if (Route::has('register'))
                             <li class="nav-item">
                                 <a href="{{ route('register') }}" class="btn btn-primary-custom">Register</a>
                             </li>
-                        @endif
+                        @endif --}}
                     @endauth
                 @endif
             </ul>
