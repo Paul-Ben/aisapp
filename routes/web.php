@@ -15,6 +15,7 @@ use App\Http\Controllers\GirlsHairstyleController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\OnlinePaymentController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProprietorController;
 use App\Http\Controllers\StaffClassesController;
 use App\Http\Controllers\StaffResultEntryController;
 use App\Http\Controllers\StudentController;
@@ -193,6 +194,15 @@ Route::middleware(['auth', 'role:exam_officer'])->prefix('exam')->name('exam.')-
     Route::get('/dashboard', function () {
         return view('dashboards.exam');
     })->name('dashboard');
+});
+
+// Proprietor Routes
+Route::middleware(['auth', 'role:proprietor'])->prefix('proprietor')->name('proprietor.')->group(function () {
+    Route::get('/dashboard', [ProprietorController::class, 'dashboard'])->name('dashboard');
+    Route::get('/overview', [ProprietorController::class, 'overview'])->name('overview');
+    Route::get('/finance', [ProprietorController::class, 'finance'])->name('finance');
+    Route::get('/academics', [ProprietorController::class, 'academics'])->name('academics');
+    Route::get('/enrollment', [ProprietorController::class, 'enrollment'])->name('enrollment');
 });
 
 // Super Admin Routes
